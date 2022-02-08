@@ -1,0 +1,759 @@
+<!–– Author: Ramy / John ––>
+
+<!DOCTYPE html>
+			<html>
+			<head>
+
+			<title>Courses - MTHDB</title>
+
+			</head>
+			<body>
+			<div id="mainDiv">
+				<div class="title">MTHDB View</div>
+				<div>
+					<a class="logoutBtn" href="logout.html">Logout</a>
+				</div>
+				<table class="mainMenu">
+					<tr>
+						<th class="menuElement"><a href="index.html">Home</a></th>
+						<th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+						<th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+						<th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+					</tr>
+
+				</table>
+
+				<form action="AddCourse.html">
+					<input class="linkBtn" type="submit" value="Add new course" />
+					</form>
+				<form action="buildProgram.html">
+                    <input class="linkBtn" type="submit" value="Build new program"/></form>
+				<div class="searchDiag">
+					<p id="msg">Choose the type of the search, type in desired key
+						phrase and press search, or use the next and previous buttons to
+						browse all courses:</p>
+					<label class="labels">Phrase:</label> <input class="fields"
+						id="phrase" /> <label class="dropMnuMsg" for="choices">Choose search type:</label> <select id="choices" class="dropMenu">
+						<option value="sv">Swedish Name</option>
+						<option value="en">English Name</option>
+						<option value="code">Course Code</option>
+					</select> <input id="subBtn" type="submit" value="Search"/>
+				</div>
+				<p id="errorMsg"></p> 
+				
+				
+				 
+				
+				
+				
+				
+				
+					
+				<div id="browseDiv">
+					<table id="browseTbl" style="width:100%; ">
+						
+					
+					</table>
+				</div>
+					
+					
+						
+				
+				<div id="tableDiv">
+					<table id="table" style="width: 100%">   
+						<tr style="background-color: grey">
+							<th>Code</th>
+							<td id="cod1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>English Name</th>
+							<td id="en1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>Swedish Name</th>
+							<td id="se1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>Points</th>
+							<td id="pnts1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>Examiner Text</th>
+							<td id="exm1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>History Text</th>
+							<td id="hst1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>Course co-ordinator text</th>
+							<td id="co1" style="background-color: silver"></td>
+						</tr>
+						<tr style="background-color: grey">
+							<th>Course Progress</th>
+							<td id="%1" style="background-color: silver"></td>
+						</tr>
+						<tr id="updt" style="background-color: grey">
+							<th></th>
+							<td id="update" style="background-color: silver">
+							<button class="UpdtBtn" id="edit">Edit</button> |
+							<button class="UpdtBtn" id="dlt">Delete</button></td>
+						</tr>
+					</table>
+				</div>
+				<form>
+					<input id="courseID" type="hidden" name="courseID" value=-1 />
+				</form>
+				<div id="btns">
+					<input type="image" id="prevBtn" alt="Previous" src="b2.svg">
+					<input type="image" id="nxtBtn" alt="Next" src="b2.svg">
+
+					<input type="image" id="browsePrev" alt="Previous" src="b2.svg">
+					<input type="image" id="browseNxt" alt="Next" src="b2.svg">
+				</div>
+
+				<br> 
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				
+			</div>
+				<footer id="footer"></footer>
+
+
+				<script>
+					document.getElementById("footer").innerHTML = new Date();
+
+					let courseID = document.getElementById("courseID").value;
+					if (courseID == -1) {
+						document.getElementById("prevBtn").style.visibility = "hidden";
+						document.getElementById("updt").style.visibility = "hidden";
+						document.getElementById("update").style.visibility = "hidden";
+					}
+				</script>
+
+			<script>
+
+				//Hides search table and its buttons (they are showed qagain when user performs a search, and the browse button and table are hidden then)
+				document.getElementById("tableDiv").style.visibility = "hidden";
+				document.getElementById("prevBtn").style.visibility = "hidden";
+				document.getElementById("nxtBtn").style.visibility = "hidden";
+
+			</script>
+
+			<script>
+
+				function showBrowse(){
+					//Starts from beginig
+					let browseID=0;
+					let jsonReq = new XMLHttpRequest();
+
+					//Gets 10 courses
+					jsonReq.open('GET', 'Get10Courses?courseID=' + browseID, true);
+					jsonReq.onload = function() {
+						if (jsonReq.status == 200) {
+							tableMaker(jsonReq.responseText);
+						
+						} else {
+							document.getElementById("errorMsg").value = jsonReq.statusText;
+						}
+
+					}
+				jsonReq.send();
+				}
+				
+				showBrowse();
+
+
+				//Function that creats HTML code for table
+				function tableMaker(responseText){
+					let json = JSON.parse(responseText);
+					let courses=json.courses;
+					let tblHTML;
+					//First adding the titles/headers of the table
+					tblHTML='<tr style="background-color:grey">'+
+			'<th>English Name</th>'+
+			'<th>Swedish Name</th> '+
+			'<th>Code</th> '+
+			'<th>Points</th>'+ 
+			'<th>Edit</th> '+
+			'<th>Delete</th>'+
+			'<th>Add to program basket</th>'+
+			'</tr>';
+				//Looping through array and adding rows
+					for(i=0;i<courses.length;i++){
+						let link="ShowCoursePage?code="+courses[i].code;
+						tblHTML+='<tr class="tblGrid">';
+							
+						tblHTML+='<td>';
+						tblHTML+='<a href='+link+ ' id="crsLink">' + courses[i].enName + '</a>';
+						tblHTML+='</td>';
+						
+						tblHTML+='<td>';
+						tblHTML+='<a href='+link+ ' id="crsLink">' + courses[i].swName + '</a>';
+						tblHTML+='</td>';
+						
+						tblHTML+='<td>';
+						tblHTML+=courses[i].code;
+						tblHTML+='</td>';
+						
+						tblHTML+='<td>';
+						tblHTML+=courses[i].points;
+						tblHTML+='</td>';
+
+						
+						tblHTML+='<td>';
+						tblHTML+='<input type=button value="Edit Course" class="editBtn" onclick='+'"editCourse('+"'"+courses[i].code+"'"+')">';
+						tblHTML+='</td>';
+						
+						
+						tblHTML+='<td>';
+						tblHTML+='<input type=button value="Delete Course" class="dltBtn" onclick='+'"findAndDeleteCourse('+"'"+courses[i].code+"'"+')">';
+						tblHTML+='</td>';
+			
+						
+						tblHTML+='<td>';
+						tblHTML+='<input type=button value="Add" class="addBtn" onclick='+'"add2Bask('+"'"+courses[i].code+"'"+')">';
+						tblHTML+='</td>';
+						tblHTML+='</tr>';
+
+					}
+				//Changes HTML code of table and insert the newly gxenerated one (Instead for empty)
+				document.getElementById("browseTbl").innerHTML=tblHTML;	
+				//Hides prev btn
+				document.getElementById("browsePrev").style.visibility = "hidden";
+
+				}
+				
+
+			</script>
+
+			<script>
+			function add2Bask(co){
+				let coursesCoockie=getCookie("coursesToAdd");
+				if(coursesCoockie.length==0)
+				{
+					document.cookie='coursesToAdd={"courses":["'+co+'"]}';	//Stored as json since we can only store strings in cookies and we want to have an array
+				}
+				else{//If coockie already exists then we extract info from it by converting it to JS object (using parse), add new data and then convert it back into json/string in order to store it as cookie
+					let courseCoockieAsObject=JSON.parse(coursesCoockie);
+					let arr=courseCoockieAsObject.courses;
+					for(i=0;i<arr.length;i++){
+						if(arr[i]==co)
+						{
+							window.alert("This course is already added!");
+							return;
+						}
+					}
+					
+					courseCoockieAsObject.courses[courseCoockieAsObject.courses.length]=co;
+					let newArrayAsString=JSON.stringify(courseCoockieAsObject);
+					document.cookie='coursesToAdd='+newArrayAsString;	//This will overwrite coockie with new one
+				}
+
+
+
+			}
+			function editCourse(co){
+				let link="EditCourse?code="+co;
+				location.href=link; 
+			}
+			
+			function findAndDeleteCourse(co){
+				console.log(co);
+				let jsonReq = new XMLHttpRequest();
+				let courseAsJS;
+				jsonReq.open('GET', '/MTHDB/GetCourse?courseID=0&code='+ co, true);
+				jsonReq.onload = function() {
+					if (jsonReq.status == 200) {
+						courseAsJS = JSON.parse(jsonReq.responseText);
+						deleteCourse(courseAsJS);
+					}
+				}
+				jsonReq.send();
+			}
+			
+			function deleteCourse(co){
+				let courseToDelete = {	//Json creatiion. names of attributes here should match ones in backend (model)
+                    enName : co.enName,
+             
+                    swName : co.swName,
+             
+                    code : co.code,
+                
+                    coOrd : co.coOrd,
+                    
+                    examiner : co.examiner,
+             
+                    history : co.history,
+             
+                    progress : co.progress,
+                      
+                    courseInfo : co.courseInfo,
+
+                    courseOfferings : co.courseOfferings,
+
+                    elements : co.elements
+
+                }
+				let coJson = JSON.stringify(courseToDelete);
+				console.log(coJson);
+				let jsonReq = new XMLHttpRequest();
+				if(confirm("Are you sure you want to delete this course?")){
+					jsonReq.open('POST', '/MTHDB/DeleteCourse', true);
+					jsonReq.onload = function(){
+						if(jsonReq.responseText == "1"){
+							window.alert("Course has been deleted.");
+							showBrowse();
+						}
+					}
+				}
+				jsonReq.send(coJson);
+			}
+				
+			function getCookie(cName) {
+				var name = cName + "=";
+				var cookies = document.cookie;
+				var coockiesArr = cookies.split(';');	//Splits string into array of string using ; as delimiter
+				for(var i = 0; i <coockiesArr.length; i++) {
+					var singleCookie= coockiesArr[i];
+					while (singleCookie.charAt(0) == ' ') {	//To remove spaces
+					singleCookie= singleCookie.substring(1);
+					}
+					if (singleCookie.indexOf(name) == 0) {
+						return singleCookie.substring(name.length, singleCookie.length);	
+					}
+				}
+				return "";
+			}
+
+
+				document.getElementById('browseNxt').addEventListener('click', getNxt);
+					function getNxt(e) {
+						e.preventDefault();
+						
+						browseID+=10;
+						let jsonReq = new XMLHttpRequest();
+
+						//Gets 10 courses
+						jsonReq.open('GET', 'Get10Courses?courseID=' + browseID, true);
+						jsonReq.onload = function() {
+							if (jsonReq.status == 200) {
+								//If Prev btn was hidden make it visible
+								document.getElementById("browsePrev").style.visibility = "visible";
+								//If last course reached, hide nxt btn
+								var lastCourse=Req.getResponseHeader('isLastPage');
+								if(lastCourse==1)
+									document.getElementById("browseNxt").style.visibility = "hiddnen";
+
+								tableMaker(jsonReq.responseText);
+								
+							} else {
+								document.getElementById("errorMsg").value = jsonReq.statusText;
+							}
+
+						}
+						jsonReq.send();
+					}
+
+				document.getElementById('browsePrev').addEventListener('click', getPrev);
+					function getPrev(e) {
+						e.preventDefault();
+						browseID-=10;
+						let jsonReq = new XMLHttpRequest();
+						//Gets 10 courses
+						jsonReq.open('GET', 'Get10Courses?courseID=' + browseID, true);
+						jsonReq.onload = function() {
+							if (jsonReq.status == 200) {
+								//If nxt btn was hidden make it visible
+								document.getElementById("browseNxt").style.visibility = "visible";
+								//If first page page reached hide prev btn
+								if(browseID==0)
+									document.getElementById("browsePrev").style.visibility = "hiddnen";
+									
+								tableMaker(jsonReq.responseText);
+								
+							} else {
+								document.getElementById("errorMsg").value = jsonReq.statusText;
+							}
+
+						}
+						jsonReq.send();
+					}
+				
+			</script>
+
+			<script>
+
+				
+				
+				
+				
+				
+					let crs = 0;
+					document.getElementById('subBtn').addEventListener('click', search);
+					function search(e) {
+						e.preventDefault();
+
+
+
+						let jsonReq = new XMLHttpRequest();
+
+						let srchTyp = document.getElementById("choices").options[choices.selectedIndex].value;
+						let srchPh = document.getElementById("phrase").value;
+
+						if (srchPh == "") {
+							window.alert("Search phrase can not be empty");
+							return;
+						}
+
+						jsonReq.open('GET', 'GetCourse?courseID=' + crs + "&" + srchTyp
+								+ "=" + srchPh, true);
+						jsonReq.onload = function() {
+							if (jsonReq.status == 200) {
+								//Shows search table, hides browse one
+								document.getElementById("tableDiv").style.visibility = "visible";
+								document.getElementById("browseDiv").style.visibility = "hidden";
+								//Hide browse nxt/prev buttons, shows search nxt/prev
+								document.getElementById("browsePrev").style.visibility = "hidden";
+								document.getElementById("browseNxt").style.visibility = "hidden";
+								document.getElementById("prevBtn").style.visibility = "visible";
+								document.getElementById("nxtBtn").style.visibility = "visible";
+
+								populate(jsonReq.responseText);
+								document.getElementById("updt").style.visibility = "visible";
+								document.getElementById("update").style.visibility = "visible";
+								
+								if (crs < 1) {
+									document.getElementById("prevBtn").style.visibility = "hidden";
+								}
+
+							} else {
+								document.getElementById("errorMsg").value = jsonReq.statusText;
+							}
+
+						}
+						jsonReq.send();
+					}
+					document.getElementById('prevBtn').addEventListener('click', getPrev);
+					function getPrev(e) {
+						e.preventDefault();
+						let jsonReq = new XMLHttpRequest();
+						crs--;
+
+						let srchTyp = document.getElementById("choices").options[choices.selectedIndex].value;
+						let srchPh = document.getElementById("phrase").value;
+
+						jsonReq.open('GET', 'GetCourse?courseID=' + crs + "&" + srchTyp
+								+ "=" + srchPh, true);
+						jsonReq.onload = function() {
+							if (jsonReq.status == 200) {
+								populate(jsonReq.responseText);
+								document.getElementById("courseID").value--;
+								if (crs < 1) {
+									document.getElementById("prevBtn").style.visibility = "hidden";
+								}
+
+							} else {
+								document.getElementById("errorMsg").value = jsonReq.statusText;
+							}
+
+						}
+						jsonReq.send();
+					}
+					document.getElementById('nxtBtn').addEventListener('click', getNxt);
+					function getNxt(e) {
+						e.preventDefault();
+
+						let srchTyp = document.getElementById("choices").options[choices.selectedIndex].value;
+						let srchPh = document.getElementById("phrase").value;
+
+						let jsonReq = new XMLHttpRequest();
+						crs++;
+						jsonReq.open('GET', 'GetCourse?courseID=' + crs + "&" + srchTyp
+								+ "=" + srchPh, true);
+						jsonReq.onload = function() {
+							if (jsonReq.status == 200) {
+								populate(jsonReq.responseText);
+								document.getElementById("courseID").value++;
+								if (crs > 0)
+									document.getElementById("prevBtn").style.visibility = "visible";
+
+							} else {
+
+								document.getElementById("errorMsg").value = jsonReq.statusText;
+							}
+
+						}
+						jsonReq.send();
+					}
+
+					function update() {
+						if (document.getElementById("courseID").value < 1) {
+
+						}
+					}
+
+					function populate(responseText) {
+						let json = JSON.parse(responseText);
+						let link="ShowCoursePage?code="+json.code;
+						document.getElementById("en1").innerHTML = '<a id="crsLink" href='+link+'>' + json.enName + '</a';
+						sessionStorage.enName = json.enName;
+						document.getElementById("se1").innerHTML = '<a id="crsLink" href='+link+'>' + json.swName + '</a';
+						sessionStorage.swName = json.swName;
+						document.getElementById("cod1").innerHTML = '<a id="crsLink" href='+link+'>' + json.code + '</a';
+						sessionStorage.code = json.code;
+						document.getElementById("pnts1").innerHTML = json.points;
+						sessionStorage.points = json.points;
+						document.getElementById("exm1").innerHTML = json.examiner;
+						sessionStorage.examin = json.examiner;
+						document.getElementById("hst1").innerHTML = json.history;
+						sessionStorage.hist = json.history;
+						document.getElementById("co1").innerHTML = json.coOrd;
+						sessionStorage.coOrd = json.coOrd;
+						document.getElementById("%1").innerHTML = json.progress;
+						sessionStorage.progress = json.progress;
+						document.getElementById("edit").onclick = function(){
+							location.href = "EditCourse?code="+json.code;
+						}
+						document.getElementById("dlt").onclick = function(){
+							findAndDeleteCourse(json.code);
+						}
+						if (json.isLast == 'y')
+							document.getElementById("nxtBtn").style.visibility = "hidden";
+						else
+							document.getElementById("nxtBtn").style.visibility = "visible";
+
+					}
+					
+				//Check active session
+				document.getElementById("mainDiv").style.visibility="hidden";
+				let sessionReq = new XMLHttpRequest();
+				sessionReq .open('GET', 'CheckActiveSession', true);
+				sessionReq .onload = function() {
+					if (sessionReq .status == 200) {
+						if (sessionReq .responseText==1) {
+							document.getElementById("mainDiv").style.visibility="visible";
+						}
+						if (sessionReq .responseText!=1) {
+							window.location.assign("Login.html");
+						}
+					}
+				}
+				sessionReq .send();
+				</script>
+
+			</body>
+			<style>
+			.searchDiag {
+				margin: auto;
+				margin-top: 3%;
+				width: 55%;
+				margin-bottom: 4%;
+			}
+
+			.labels {
+				display: block;
+				padding: 5px;
+				font-weight: 900;
+				font-size: large;
+			}
+			
+			.editBtn {
+				display: block;
+				margin: auto;
+			}
+			
+			.addBtn {
+				display: block;
+				margin: auto;
+			}
+			
+			.dltBtn {
+				display: block;
+				margin: auto;
+			}
+
+			#subBtn {
+				background-color: #333333;
+				height: 40px;
+				width: 12%;
+				border: none;
+				color: white;
+				font-weight: 500;
+				font-size: large;
+				margin-top: 3%;
+				display: block;
+			}
+			th, td {
+				border-left: solid;
+				border-bottom: solid;
+				border-width: 1px;
+				border-color: #333333;
+			}
+			tr {
+				border-top: solid;
+				border-bottom: solid;
+				border-width: 1px;
+				border-color: #333333;
+			}
+			.fields {
+				display: block;
+				width: 28%;
+				border: #333333;;
+				border-style: solid;
+				border-width: 1px;
+				border-radius: 5px;
+				height: 30px;
+				margin-bottom: 1%;
+			}
+			#browseDiv {
+				display: block;
+				margin-left: 350px;
+				margin-bottom: 3%;
+				margin: auto;
+				width: 88%;
+			}
+			.tblGrid {
+				border-style:solid;
+				border-color: #333333;
+				border-width: 1px;
+			}
+
+			#tableDiv {
+				display: block;
+				margin-left: 350px;
+				margin-bottom: 3%;
+				width: 20%;
+			}
+
+			#prevBtn {
+				margin: auto;
+				margin-left: 45%;
+				transform: rotate(180deg);
+				width: 3%;
+			}
+
+			#nxtBtn {
+				margin: auto;
+				margin-right: 45%;
+				width: 3%;
+			}
+
+			#browsePrev {
+				margin: auto;
+				margin-left: 45%;
+				transform: rotate(180deg);
+				width: 3%;
+			}
+
+			#browseNxt {
+				margin: auto;
+				margin-right: 45%;
+				width: 3%;
+			}
+
+			.dropMnuMsg {
+				font-size: small;
+			}
+
+			#msg {
+				width: 100%;
+				font-size: 21px;
+				margin: auto;
+				margin-top: 5%;
+				margin-bottom: 2%;
+				font-weight: 900;
+			}
+
+			.linkBtn {
+				opacity: 80%;
+				background-color: grey;
+				height: 40%;
+				width: 16%;
+				border: none;
+				color: black;
+				font-weight: 800;
+				font-size: large;
+				margin-top: 1%;
+				margin-left: 74%;
+				border-style: solid;
+				border-radius: 6px;
+				border-width: 2px;
+			}
+
+			.mainMenu {
+				border-radius: 10px;
+				border: grey;
+				border-style: groove;
+				width: 90%;
+				height: 60px;
+				font-size: 20px;
+				align-items: center;
+				margin: auto;
+				margin-top: 50px;
+			}
+
+			.menuElement {
+				color: red;
+				font-style: normal;
+				border-style: inset;
+				border-radius: 10px;
+			}
+
+			.title {
+				background-color: black;
+				width: 100%;
+				color: goldenrod;
+				font-size: 100px;
+				height: 150px;
+				text-indent: 28%;
+				font-weight: 900;
+				border: 1px;
+				border-style: solid;
+				border-color: goldenrod;
+			}
+
+			.UpdtBtn {
+				color: red;
+			}
+
+			.logoutBtn {
+				background-color: black;
+				color: goldenrod;
+				font-size: 18px;
+				margin-left: 89%;
+				font-weight: 300;
+				position: absolute;
+				top: 32px;
+			}
+
+			a {
+				color: black;
+				text-decoration: none;
+				font-weight: 300;
+			}
+
+			a:hover {
+				color: goldenrod;
+			}
+
+			body {
+				background-color: gainsboro;
+			}
+
+			body footer {
+				vertical-align: bottom;
+				border: none;
+				border-top: black solid 1px;
+				text-indent: 40%;
+				font-size: small;
+				list-style: height 20px;;
+			}
+			</style>
+			</html>

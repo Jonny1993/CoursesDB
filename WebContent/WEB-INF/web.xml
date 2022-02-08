@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>MTHDB</display-name>
+  
+
+<servlet>
+    <servlet-name>GetCourse</servlet-name>
+    <servlet-class>servlets.GetCourseAsJson</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetCourse</servlet-name>
+    <url-pattern>/GetCourse</url-pattern>
+  </servlet-mapping>
+  
+
+ <servlet>
+    <servlet-name>ShowCoursePage</servlet-name>
+    <servlet-class>servlets.ShowCoursePage</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowCoursePage</servlet-name>
+    <url-pattern>/ShowCoursePage</url-pattern>
+  </servlet-mapping>
+  
+
+<servlet>
+    <servlet-name>EditCourse</servlet-name>
+    <servlet-class>servlets.EditCourse</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditCourse</servlet-name>
+    <url-pattern>/EditCourse</url-pattern>
+  </servlet-mapping>
+  
+
+
+  <servlet>
+    <servlet-name>AddCourse</servlet-name>
+    <servlet-class>servlets.AddCourse</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddCourse</servlet-name>
+    <url-pattern>/AddCourse</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>DeleteCourse</servlet-name>
+    <servlet-class>servlets.DeleteCourse</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteCourse</servlet-name>
+    <url-pattern>/DeleteCourse</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+    <servlet-name>GetTeacher</servlet-name>
+    <servlet-class>servlets.GetTeacherAsJson</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetTeacher</servlet-name>
+    <url-pattern>/GetTeacher</url-pattern>
+  </servlet-mapping>
+
+
+    <servlet>
+    <servlet-name>Get10Courses</servlet-name>
+    <servlet-class>servlets.Get10Courses</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Get10Courses</servlet-name>
+    <url-pattern>/Get10Courses</url-pattern>
+  </servlet-mapping>
+
+    <servlet>
+    <servlet-name>Get10Teachers</servlet-name>
+    <servlet-class>servlets.Get10Teachers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Get10Teachers</servlet-name>
+    <url-pattern>/Get10Teachers</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <servlet-name>UpdateTeacher</servlet-name>
+    <servlet-class>servlets.UpdateTeacher</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateTeacher</servlet-name>
+    <url-pattern>/UpdateTeacher</url-pattern>
+  </servlet-mapping>
+  
+        <servlet>
+    <servlet-name>UpdateCourse</servlet-name>
+    <servlet-class>servlets.UpdateCourse</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateCourse</servlet-name>
+    <url-pattern>/UpdateCourse</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CheckActiveSession</servlet-name>
+    <servlet-class>servlets.CheckActiveSession</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckActiveSession</servlet-name>
+    <url-pattern>/CheckActiveSession</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>StartSession</servlet-name>
+    <servlet-class>servlets.StartSession</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StartSession</servlet-name>
+    <url-pattern>/StartSession</url-pattern>
+  </servlet-mapping>
+
+
+
+  <servlet>
+    <servlet-name>EndSession</servlet-name>
+    <servlet-class>servlets.EndSession</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EndSession</servlet-name>
+    <url-pattern>/EndSession</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetListOfProgs</servlet-name>
+    <servlet-class>servlets.GetListOfProgs</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetListOfProgs</servlet-name>
+    <url-pattern>/GetListOfProgs</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
+    <servlet-name>GetListOfBranches</servlet-name>
+    <servlet-class>servlets.GetListOfBranches</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetListOfBranches</servlet-name>
+    <url-pattern>/GetListOfBranches</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetListOfTeachers</servlet-name>
+    <servlet-class>servlets.GetListOfTeachers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetListOfTeachers</servlet-name>
+    <url-pattern>/GetListOfTeachers</url-pattern>
+  </servlet-mapping>  
+  
+    <servlet>
+    <servlet-name>buildProgram</servlet-name>
+    <servlet-class>servlets.buildProgram</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>buildProgram</servlet-name>
+    <url-pattern>/buildProgram</url-pattern>
+  </servlet-mapping> 
+  
+    <servlet>
+    <servlet-name>GetProgram</servlet-name>
+    <servlet-class>servlets.GetProgramAsJson</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetProgram</servlet-name>
+    <url-pattern>/GetProgram</url-pattern>
+  </servlet-mapping> 
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

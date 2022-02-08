@@ -1,0 +1,14 @@
+<!–– Author: Therese ––>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: http://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="120pt"
+    height="120pt"
+    viewBox="0 0 120 120">
+<defs/>
+<ellipse id="shape0" transform="matrix(2.14798600075962 0 0 2.15307206470602 -0.10318788277912 0.0541532985224646)" rx="27.96" ry="27.84" cx="27.96" cy="27.84" fill="#656565" fill-rule="evenodd"/><path id="shape01" transform="matrix(1.00000001209755 0 0 1.00000000050436 42.8848005188009 28.4223000143352)" fill="#f5f5f5" fill-rule="evenodd" d="M8.7904 0L40.1114 31.0855L39.8222 31.3783L39.9156 31.472L8.7486 62.7127L0 53.9434L22.6661 31.2237L0.0853 8.8127L8.7904 0"/>
+</svg>

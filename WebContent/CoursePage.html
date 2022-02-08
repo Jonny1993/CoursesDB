@@ -1,0 +1,542 @@
+<!–– Author: Ramy / John ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Course Page - MTHDB</title>
+
+    </head>
+    <body>
+        <div id="mainDiv">
+        <div class="title">MTHDB View
+        </div>
+        <div><a class="logoutBtn" href="logout.html" >Logout</a> 
+        </div>
+            <table class="mainMenu">
+                <tr>
+                    <th class="menuElement"><a href="index.html">Home</a></th>
+                    <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+                    <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+                    <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+                </tr>
+            
+            </table>
+			
+			<h2 id="title"></h2>
+        <div class="inputs" method='get'>
+ 
+     
+            <div class="lab-in"> 
+            <label class="labels">English Name:</label>
+            <p class="fields" id="en"   ></p>
+            </div>
+            <div class="lab-in">
+            <label class="labels">Swedish name:</label>
+            <p class="fields" id="sv" > 
+            </div>
+            <div class="lab-in">
+            <label class="labels">Course code:</label> 
+            <p class="fields"  id="cCode"  >
+            </div>
+            <div class="lab-in">
+            <label class="labels">Course coordinator:</label> 
+            <p class="fields" id="co"  ></p>
+            </div>
+            <div class="lab-in"> 
+            <label class="labels">History:</label>
+            <p class="fields" id="hit"  ></p>
+            </div>
+            <div class="lab-in">
+            <label class="labels">Examiner:</label>
+            <p class="fields" id="tch"  ></p>
+            </div>
+            <div class="lab-in">
+                <label class="labels">Progression:</label>
+                <p class="fields" id="com"  ></p>
+            </div>
+
+            <div id="delMom">
+                <div class='smallInfoMsg'>
+                    Course component 1:
+                </div> 
+                <label class="labels">Name:</label>
+                <p class="fields2" id="dmc1"  >-</p>
+                <label class="labels">Points:</label>
+                <p class="fields2" id="dmp1"  >-</p>
+                <div class='smallInfoMsg'>
+                    Course component 2:
+                </div> 
+                <label class="labels">Name:</label>
+                <p class="fields2" id="dmc2"  ></p>
+                <label class="labels">Points:</label>
+                <p class="fields2" id="dmp2"  ></p>
+                <div class='smallInfoMsg'>
+                    Course component 3:
+                </div> 
+                <label class="labels">Name:</label>
+                <p class="fields2" id="dmc3"  >-</p>
+                <label class="labels">Points:</label>
+                <p class="fields2" id="dmp3"  >-</p>
+                <br>
+                <br>
+                <br>
+            </div>
+
+
+
+ 
+            <div id="offering">
+            
+            </div>
+                
+
+            <div id="info">
+              
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <footer id="footer">12-12-2013</footer>
+
+        
+    </body>
+
+    <style type="text/css">
+
+
+    #subBtn{
+        background-color: #333333;
+        height: 40px;
+        width: 100%;
+        border: none;
+        color:white;
+        font-weight: 500;
+        font-size: large;
+        margin-top: 5%;
+    }
+    .infoMsg{
+        margin:auto;
+        text-align: center;
+        width: 70%;
+        font-weight: 999;
+        margin-top: 3%;
+        margin-bottom: 109%;
+        font-size: x-large;
+    }   
+    .smallInfoMsg{
+        font-weight: 550;
+        margin-top: 6%;
+        font-size: medium;
+        color: darkred;
+        margin-bottom: 8px;
+    }
+
+
+    .fields {
+    margin-left: 25px;
+    width: 100%;
+    border: #333333;
+    / border-style: solid; /
+    border-width: 1px;
+    border-radius: 5px;
+}   
+.fields2 {
+    width: 100%;
+    border: #333333;
+    border-width: 1px;
+    border-radius: 5px;
+    display: inline;
+}   
+
+.showIn{
+    display: inline;
+}
+    .labels{
+        padding: 5px;
+        font-weight: 900;
+
+    }
+    .lab-in{
+        padding-bottom:15px;
+
+    }
+
+
+    #delMom input[type="text"], .p {
+        padding:8px;
+	    width:40%;
+        padding: 9px;
+        margin-top: 10px;
+    }
+	
+	#title {
+		text-align: center;
+		color: navy;
+	}
+
+    .dropMenu{
+        width:102%;
+        height: 34px;
+        margin:auto;
+        margin-bottom: 2%;
+        margin-top: 1.5%;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 5px;
+    }
+
+    .inputs{
+        width:55%;
+        margin:auto;
+        margin-bottom: 10%;
+        margin-top: 1.5%;
+    }
+    .inputs input[type="text"], .p {
+        padding:8px;
+	    width:100%;
+    }
+    .inputs textarea{
+        height: 80px;
+    }
+  
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 18%;
+        
+
+    }
+    
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    }    
+    .menuElement{
+        color:red;
+        font-style: normal;
+        border-style: inset;
+        border-radius: 10px;
+    }
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+    .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+        }
+
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+
+
+    }
+    </style>
+
+    <script>
+
+//BEG. OF THE NEW PART
+let jsonReq = new XMLHttpRequest();
+
+
+courseCodeFromCookie=getCookie("courseToshowOrEdit");
+document.getElementById("title").innerHTML = "Course Information - " + courseCodeFromCookie;
+jsonReq.open('GET', 'GetCourse?courseID=0&code='+ courseCodeFromCookie, true);
+jsonReq.onload = function() {
+    if (jsonReq.status == 200) {
+        let courseAsJSObject=JSON.parse(jsonReq.responseText);
+        fillFields(courseAsJSObject);   
+
+    } else {
+        document.getElementById("errorMsg").value = jsonReq.statusText;
+    }
+
+}
+jsonReq.send();
+
+function fillFields(courseToDisplay){
+    document.getElementById("en").innerHTML = courseToDisplay.enName;
+    document.getElementById("sv").innerHTML = courseToDisplay.swName;
+    document.getElementById("cCode").innerHTML = courseToDisplay.code;
+    document.getElementById("co").innerHTML = courseToDisplay.coOrd;
+    document.getElementById("hit").innerHTML = courseToDisplay.history;
+    document.getElementById("tch").innerHTML = courseToDisplay.examiner;
+    document.getElementById("com").innerHTML = courseToDisplay.progress;
+    fillCourseOfferings(courseToDisplay);
+    fillCourseInfo(courseToDisplay);
+    fillCourseElements(courseToDisplay);
+
+}
+function fillCourseElements(courseToDisplay){
+			let elementsArr = courseToDisplay.elements;
+			for(i=0; i < elementsArr.length; i++){
+				document.getElementById("dmc"+(i+1)).innerHTML = elementsArr[i].name;
+				document.getElementById("dmp"+(i+1)).innerHTML = elementsArr[i].points;
+			}
+}
+    function fillCourseOfferings(courseToDisplay){
+        let offeringHTML='<div class="smallInfoMsg offeringNr"> Course Offering </div><br>'+
+            '<label class="labels">Number of admitted students:</label>'+
+            '<p  class="fields2 expectedNr">'+
+            '<p  class="labels showIn">Number of reported students:</p>'+
+            '<p  class="fields2 reportedNr">'+
+            '<p class="labels showIn">Calender Year:</p>'+
+            '<p class="fields2 calYear">'+
+                '<div class="teacherDropMnuDiv">'+
+                    '<label class="labels">Teacher:</label> '+
+                    '<p class="fields2 teacher" >'+
+                    '</p> '+
+                    '<label class="labels"> Percentage:</label>'+
+                    '<p  class="fields2 percentage">'+
+                    '</p> '+
+
+                    '<br><br>'+
+                    '<label class="labels">Teacher 2:</label> '+
+                    '<p class="fields2 teacher2" >-'+
+                    '</p> '+
+                    '<label class="labels"> Percentage:</label>'+
+                    '<p  class="fields2 percentage2">-'+
+                        '</p> '+
+
+                    '<br><br>'+
+                    '<label class="labels">Teacher 3:</label> '+
+                    '<p class="fields2 teacher3" >-'+
+                    '</p> '+
+                    '<label class="labels"> Percentage:</label>'+
+                    '<p class="fields2 percentage3">-'+
+                    '</p> '+
+
+                    '<br>'+
+                '</div>';
+
+
+                
+
+        let offeringsArr=courseToDisplay.courseOfferings;
+        let nrOfOfferings=offeringsArr.length;
+        
+        //Empty form is left until page is loaded, then deleted in order to add it/them in prpper quatity depending on how many offerings the course has
+        document.getElementById("offering").innerHTML="";
+        for(i=0;i<nrOfOfferings;i++){
+            
+            document.getElementById("offering").innerHTML+=offeringHTML;
+        }
+		let offeringNr=document.getElementsByClassName("offeringNr");
+        let expectArrHTML=document.getElementsByClassName("expectedNr");
+        let reportedArrHTML=document.getElementsByClassName("reportedNr");
+        let yearArrHTML=document.getElementsByClassName("calYear");
+
+        let teach1ArrHTML=document.getElementsByClassName("teacher");
+        let perc1ArrHTML=document.getElementsByClassName("percentage");
+        let teach2ArrHTML=document.getElementsByClassName("teacher2");
+        let perc2ArrHTML=document.getElementsByClassName("percentage2");
+        let teach3ArrHTML=document.getElementsByClassName("teacher3");
+        let perc3ArrHTML=document.getElementsByClassName("percentage3");
+
+        //Add expected nr oh students
+        for(i=0;i<nrOfOfferings;i++){
+			offeringNr[i].innerHTML+= (i+1) + ":";
+            expectArrHTML[i]. innerHTML=offeringsArr[i].expectedStu + "<br><br>";
+        }
+
+        //Add reported nr oh students
+        for(i=0 ;i<nrOfOfferings;i++){
+            reportedArrHTML[i]. innerHTML=offeringsArr[i].reportedStu + "<br><br>";
+        }
+
+        //Add year
+        for(i=0 ;i<nrOfOfferings;i++){
+            yearArrHTML[i]. innerHTML=offeringsArr[i].year + "<br><br>";
+        }
+
+        //Add teacher/percentage
+        for(i=0 ;i<nrOfOfferings;i++){
+                let jsTeacherArr=offeringsArr[i].teachers;
+                teach1ArrHTML[i]. innerHTML=jsTeacherArr[0].teacher;    //1st teacher is obligatory
+                perc1ArrHTML[i]. innerHTML=jsTeacherArr[0].percentage + "%";    //1st teacher is obligatory
+
+                if(jsTeacherArr.length>1)            //If there is more than 1 then add 2nd
+                {
+                    teach2ArrHTML[i]. innerHTML=jsTeacherArr[1].teacher;   
+                    perc2ArrHTML[i]. innerHTML=jsTeacherArr[1].percentage + "%"; 
+                }
+
+                if(jsTeacherArr.length>2)            //If there is more than 2 then add 2rd
+                {
+                    teach3ArrHTML[i]. innerHTML=jsTeacherArr[2].teacher;   
+                    perc3ArrHTML[i]. innerHTML=jsTeacherArr[2].percentage + "%"; 
+                }
+        }
+
+    }
+
+    function fillCourseInfo(courseToDisplay){
+        let infoHTML=  '<br><div class="smallInfoMsg progNr"> Program </div><br>'+
+                        //Program
+                        '<label class="labels">Name:</label> '+
+                        '<p   class="program fields2" >'+
+                        '</p> '+
+
+                        //Branch
+                        '<br><br><label class="labels">Branch:</label> '+
+                        '<p  class="branch fields2">'+
+                        '</p> '+
+
+                        //Obligatory
+                        '<br><br><label class="labels">Course is obligatory for this program:</label>'+
+                        '<p class="fields2 obligatory" ></p>'+
+
+                        //Year
+                        '<br><br>'+
+                        '<label class="labels">School year (1-5):</label>'+
+                        '<p class="fields2 year"></p>'+
+
+                        //Periods
+                        '<br><br>'+
+                        '<label class="labels">Periods:</label>'+
+                        '<p  class="periods fields2"></p>';
+
+        //Create div skeleton
+        let infoArr=courseToDisplay.courseInfo;
+        let nrOfInfo=infoArr.length;
+        for(i=0;i<nrOfInfo;i++){
+            document.getElementById("info").innerHTML+=infoHTML;
+        }
+        //fill in data
+		let programNr=document.getElementsByClassName("progNr");
+        let programArrHTML=document.getElementsByClassName("program");
+        let branchArrHTML=document.getElementsByClassName("branch");
+        let obligatoryArrHTML=document.getElementsByClassName("obligatory");
+        let schYearArrHTML=document.getElementsByClassName("year");
+        let periodsArrHTML=document.getElementsByClassName("periods");
+
+        
+        for(i=0;i<nrOfInfo;i++){
+			programNr[i].innerHTML+= (i+1) + ":";
+            programArrHTML[i]. innerHTML=infoArr[i].program;
+        }
+        for(i=0;i<nrOfInfo;i++){
+            branchArrHTML[i]. innerHTML=infoArr[i].branch;
+        }
+        for(i=0;i<nrOfInfo;i++){
+
+            if(infoArr[i].obligatory){
+                obligatoryArrHTML[i]. innerHTML="Yes";
+            }else{
+                obligatoryArrHTML[i]. innerHTML="No";
+            }
+        }
+        for(i=0;i<nrOfInfo;i++){
+            schYearArrHTML[i]. innerHTML=infoArr[i].year;
+        }
+        for(i=0;i<nrOfInfo;i++){
+            let periodsOfThisCourseArr=infoArr[i].periods;
+            let periodsStr="";
+            console.log("outer");
+            for(j=0;j< periodsOfThisCourseArr.length;j++)
+            {
+                console.log("looped");
+                console.log(periodsOfThisCourseArr);
+                
+                periodsStr+="Period: "+periodsOfThisCourseArr[j].period;
+                periodsStr+=" Points: "+periodsOfThisCourseArr[j].points;
+				if(j<periodsOfThisCourseArr.length-1) periodsStr+=", ";
+            }
+            console.log(periodsStr);
+            
+           periodsArrHTML[i].innerHTML=periodsStr;
+        }
+    }
+
+
+//END OF THE NEW PART
+
+
+function getCookie(cName) {
+	var name = cName + "=";
+	var cookies = document.cookie;
+	var coockiesArr = cookies.split(';');	//Splits string into array of string using ; as delimiter
+	for(var i = 0; i <coockiesArr.length; i++) {
+		var singleCookie= coockiesArr[i];
+		while (singleCookie.charAt(0) == ' ') {	//To remove spaces
+		singleCookie= singleCookie.substring(1);
+		}
+		if (singleCookie.indexOf(name) == 0) {
+			return singleCookie.substring(name.length, singleCookie.length);	
+		}
+	}
+	return "";
+}
+
+
+        document.getElementById("footer").innerHTML=new Date();	//Current date to be displayed at the buttom of the page
+
+
+        function isNr(nr){
+            return !Number.isNaN(parseInt(nr));
+        }
+
+        function capitalize(){	//switch letters to upper case when called (which is in "setonblur" up in html code). Setonblurs is triggered when the user clicks away
+            document.getElementById("cCode").value=document.getElementById("cCode").value.toUpperCase();
+        }
+        //Check active session
+        document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+    </script>
+</html>

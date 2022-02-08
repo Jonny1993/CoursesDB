@@ -1,0 +1,478 @@
+<!–– Author: Therese ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Add Teacher - MTHDB</title>
+
+    </head>
+    <body>
+    <div id="mainDiv">
+        <div class="title">MTHDB View </div>
+        <div><a class="logoutBtn" href="logout.html" >Logout</a> </div>
+            <table class="mainMenu">
+                <tr>
+                    <th class="menuElement"><a href="index.html">Home</a></th>
+                    <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+                    <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+                    <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+                </tr>    
+            </table>
+            
+        <p id="errorMsg"></p>
+        
+        <div id=infoMsg>
+            Please fill all the data that are required and then press submit button at the bottom of this form:
+        </div> 
+
+        <form id="inputs" method='get'>
+            <div class="lab-in">
+            	<label class="labels">Name:</label>
+            	<input class="fields" id="name" type="text" value="">
+
+            	<label class="labels">Signature:</label>
+            	<input class="fields" id="sign" type="text" value="">
+
+            	<label class="labels">Email:</label>
+            	<input class="fields" id="email" type="text" value="">
+
+            	<label class="labels">History:</label>
+            	<textarea class="fields" id="hist" type="text" value=""></textarea>
+
+            	<label class="labels">Development plan:</label>
+            	<textarea class="fields" id="devPlan" type="text" value=""></textarea>
+            	
+            	
+            	
+            	<button type="button" class="addRemoveButtons" id="addBtn" onclick="addCourseOff()">Add Course Offering</button>
+            	
+				<div class="courseOffDiv" id=courseOff>
+				</div>
+
+
+            	<label class="labels">Username:</label>
+            	<input class="fields" id="username" type="text" value="">
+
+            	<label class="labels">Password:</label>
+            	<input class="fields" id="password" type="password" value="">
+            </div>
+            
+            
+            <div class="lab-in">
+                <button type="submit" class="fields" id="subBtn"  >Submit</button>
+            </div>
+        </form>
+        
+        </div>
+        <footer id="footer">12-12-2013</footer>
+
+        
+    </body>
+
+    
+
+	<form>
+		<input id="cOffCount" type="hidden" name="cOffCount" value=0 />	
+	</form>
+	
+	
+	<script>
+	//Check active session
+    document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+	</script>
+	
+
+    <script>
+	document.getElementById("footer").innerHTML = new Date();	//Current date to be displayed at the buttom of the page
+
+
+	document.getElementById('subBtn').addEventListener('click', submitTeacher);
+    function submitTeacher(e) {
+        e.preventDefault();	//By default button sumbits and user is redirected to new webpage, this is to stop that
+        
+        let name = document.getElementById('name');
+        let nameStr = name.value.toString();
+        if(nameStr.length == 0) {
+        	window.alert("Name cannot be empty");
+            return;
+        }
+        
+        
+        let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        let email = document.getElementById('email');
+        let emailStr = email.value.toString();
+        let isMatch = emailStr.match(reg);
+        if(!isMatch){
+            window.alert("Email is invalid");
+            return;
+        }
+        
+        
+        if(document.getElementById("cOffCount").value > 0) {
+        	var count = document.getElementById("cOffCount").value;
+        	
+        	for(i = 0; i < count; i++) {
+        		reg = new RegExp("^[A-z]{2}[0-9]{4}$");	//Regular expression to match Course code with
+                let code = document.getElementById('code' + i);
+                let codeStr = code.value.toString();
+                isMatch = codeStr.match(reg);
+                if(!isMatch){
+                    window.alert("Course code should be in the following form: XX0000");
+                    return;
+                }
+        		
+                reg = new RegExp("^[0-9]{4}$");	//Regular expression to match Course code with
+                let year = document.getElementById('year' + i);
+                let yearStr = year.value.toString();
+                isMatch = yearStr.match(reg);
+                if(!isMatch){
+                    window.alert("Invalid year");
+                    return;
+                }
+        	}
+        }
+        
+        
+        let username = document.getElementById('username');
+        let usernameStr = username.value.toString();
+        if(usernameStr.length == 0) {
+        	window.alert("Username cannot be empty");
+            return;
+        }
+        
+        let password = document.getElementById('password');
+        let passwordStr = password.value.toString();
+        if(passwordStr.length == 0) {
+        	window.alert("Password cannot be empty");
+            return;
+        }
+        
+        
+        
+        //create course offering array
+        let codeArr = document.getElementsByClassName("code");
+        let yearArr = document.getElementsByClassName("year");
+        let courseOffArr = [];
+        
+        for(i = 0; i < codeArr.length; i++) {
+        	let code = codeArr[i].value;
+        	let year = yearArr[i].value;
+        	
+        	courseOffArr[courseOffArr.length] = {
+        			code : code,
+        			year : year,
+        	};
+        }
+        
+        
+        console.log(courseOffArr);
+
+        
+        
+        let newTeacher = {	//Json creation. names of attributes here should match ones in backend (model)
+        	email : document.getElementById('email').value,    
+        	name : document.getElementById('name').value,
+            signature : document.getElementById('sign').value,
+            history : document.getElementById('hist').value,
+            devPlan : document.getElementById('devPlan').value,
+            
+            courseOff : courseOffArr,
+            
+            username : document.getElementById('username').value,
+            password : document.getElementById('password').value,
+        };
+        let teJson = JSON.stringify(newTeacher);	//Stringify turns json to string form in order to send it
+
+        
+        
+        let jsonReq = new XMLHttpRequest();
+        jsonReq.open('POST','/MTHDB/AddTeacher', true);
+        
+        jsonReq.onload = function() {	//Onload is when servlet has sent the response (and the response received by the browser)
+            if(jsonReq.status == 200) {	//Status 200=success
+                if(jsonReq.responseText == "1");	//1 is hardcoded in servlet to send after success
+                    window.alert("Teacher added. Press OK to continue");
+                /*
+                else
+                	window.alert("Could not add teacher. Press OK to continue");
+                */
+            	document.getElementById('name').value = "";	//Clears old data that has been added
+                document.getElementById('sign').value = "";
+                document.getElementById('email').value = "";
+                document.getElementById('hist').value = "";
+                document.getElementById('devPlan').value = "";
+                while(document.getElementById('cOffCount').value > 0)
+                	removeCourseOff();
+                document.getElementById('username').value = "";
+                document.getElementById('password').value = "";
+	        }else {
+            	document.getElementById("errorMsg").value = jsonReq.statusText;
+	    	}
+	    }
+    	jsonReq.send(teJson);	//If the page were not sending a json, the function send()= would need no argument
+    }
+             
+	</script>
+    
+    
+    <script>
+   	function addCourseOff() {
+   		var count = document.getElementById("cOffCount").value;
+   		
+   		var textNode;
+   		var labelNode;
+   		var inputNode;
+   		var buttonNode;
+   		
+   		//add course code label
+   		labelNode = document.createElement("label");
+   		labelNode.setAttribute("class", "labels");
+   		labelNode.setAttribute("id", "codeLabel" + count);
+   		textNode = document.createTextNode("Course code");
+   		
+   		labelNode.appendChild(textNode);
+   		document.getElementById("courseOff").appendChild(labelNode);
+
+   		//add course code text field
+   		inputNode = document.createElement("input");
+   		inputNode.setAttribute("class", "fields code");
+   		inputNode.setAttribute("type", "text");
+   		inputNode.setAttribute("id", "code" + count);
+   		
+   		document.getElementById("courseOff").appendChild(inputNode);
+   		
+   		
+   		
+   		//add year label
+   		labelNode = document.createElement("label");
+   		labelNode.setAttribute("class", "labels");
+   		labelNode.setAttribute("id", "yearLabel" + count);
+   		textNode = document.createTextNode("Year");
+   		
+   		labelNode.appendChild(textNode);
+   		document.getElementById("courseOff").appendChild(labelNode);
+   		
+   		//add year text field
+   		inputNode = document.createElement("input");
+   		inputNode.setAttribute("class", "fields year");
+   		inputNode.setAttribute("type", "text");
+   		inputNode.setAttribute("id", "year" + count);
+   		
+   		document.getElementById("courseOff").appendChild(inputNode);
+   		
+   		
+   		
+   		//add remove button
+   		buttonNode = document.createElement("button");
+   		buttonNode.setAttribute("class", "addRemoveButtons");
+   		buttonNode.setAttribute("id", "removeBtn" + count);
+   		buttonNode.setAttribute("onclick", 'removeCourseOff()');
+   		buttonNode.onclick = function() {removeCourseOff();};
+
+   	    textNode = document.createTextNode("Remove Course Offering");
+   		
+   		buttonNode.appendChild(textNode);
+   		document.getElementById("courseOff").appendChild(buttonNode);
+   		
+   		
+   		document.getElementById("cOffCount").value++;
+   	}
+   
+   
+   	function removeCourseOff() {
+   		if(document.getElementById("cOffCount").value > 0) {
+    		document.getElementById("cOffCount").value--;
+    		var count = document.getElementById("cOffCount").value;
+    		
+    		var labelNode;
+    		var inputNode;
+    		var buttonNode;
+    		
+    		//remove code label and input
+    		labelNode = document.getElementById("codeLabel" + count);
+    		document.getElementById("courseOff").removeChild(labelNode);
+    		
+    		inputNode = document.getElementById("code" + count);
+    		document.getElementById("courseOff").removeChild(inputNode);
+    		
+    		
+    		//remove year label and input
+    		labelNode = document.getElementById("yearLabel" + count);
+    		document.getElementById("courseOff").removeChild(labelNode);
+    		
+    		inputNode = document.getElementById("year" + count);
+    		document.getElementById("courseOff").removeChild(inputNode);
+    		
+    		
+    		//remove remove button
+    		buttonNode = document.getElementById("removeBtn" + count);
+    		document.getElementById("courseOff").removeChild(buttonNode);
+    		
+    		
+    		console.log(count);
+   		}
+   	}
+    	
+    </script>
+    
+   
+    
+    
+    <style type="text/css">
+
+    #subBtn{
+        background-color: #333333;
+        height: 40px;
+        width: 100%;
+        border: none;
+        color:white;
+        font-weight: 500;
+        font-size: large;
+        margin-top: 5%;
+    }
+    .addRemoveButtons {
+    	background-color: #333333;
+        height: 25px;
+        width: 100%;
+        color:white;
+        font-weight: 400;
+        font-size: large;
+        margin-top: 5%;
+        margin-bottom: 25px;
+        
+        display: block;
+        border: #333333;;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 5px;
+    }
+    #infoMsg{
+        margin:auto;
+        text-align: center;
+        width: 70%;
+        font-weight: 999;
+        margin-top: 3%;
+        font-size: x-large;
+    }
+    .fields{
+            display: block;
+            width:100%;
+            border: #333333;;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+    }
+
+    .labels{
+        display: block;
+        padding: 5px;
+        font-weight: 900;
+
+    }
+    .lab-in{
+        padding-bottom:15px;
+    }
+    .courseOffDiv{
+    	margin-bottom: 25px;
+    }
+    #inputs{
+        width:55%;
+        margin:auto;
+        margin-bottom: 10%;
+        margin-top: 1.5%;
+    }
+    #inputs input[type="text"], #inputs textarea{
+        padding:8px;
+	    width:100%;
+    }
+    #inputs input[type="email"] {
+        padding:8px;
+	    width:100%;
+    }
+    #inputs textarea{
+        height: 80px;
+    }
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 18%;
+    }
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    }    
+    .menuElement{
+        color:red;
+        font-style: normal;
+        border-style: inset;
+        border-radius: 10px;
+    }
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+    .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+        }
+
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+
+
+    }
+    </style>
+    
+</html>

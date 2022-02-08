@@ -1,0 +1,1060 @@
+<!–– Author: Ramy / John ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Edit course - MTHDB</title>
+
+    </head>
+    <body>
+    <div id="mainDiv">
+        <div class="title">MTHDB View
+        </div>
+        <div><a class="logoutBtn" href="logout.html" >Logout</a>
+        </div>
+            <table class="mainMenu">
+                <tr>
+                    <th class="menuElement"><a href="index.html">Home</a></th>
+                    <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+                    <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+                    <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+                </tr>
+            
+            </table>
+        <div class='infoMsg'>
+            Please fill required data (*) and then press the update button at the bottom of this form:
+        </div> 
+
+        <div class="inputs" method='get'> 
+
+
+            <div class="lab-in">
+            <label class="labels">English Name*:</label> 
+            <input class="fields" id="en" type="text" value="">
+            </div> 
+            <div class="lab-in">
+            <label class="labels">Swedish name*:</label>
+            <input class="fields" id="sv" type="text" value="">
+            </div>
+            <div class="lab-in">
+            <label class="labels">Course code*:</label> 
+            <input class="fields" type="text" id="cCode" type="text" value="" onblur="capitalize()">
+            </div>
+            <div class="lab-in">
+            <label class="labels">Course coordinator:</label>
+            <textarea class="fields" id="co" type="text" value=""></textarea>
+            </div>
+            <div class="lab-in">
+            <label class="labels">History:</label>
+            <textarea class="fields" id="hit" type="text" value=""></textarea>
+            </div>
+            <div class="lab-in">
+            <label class="labels">Examiner:</label>
+            <textarea class="fields" id="tch" type="text" value=""></textarea>
+            </div>
+            <div class="lab-in">
+                <label class="labels">Progression:</label>
+                <textarea class="fields" id="com" type="text" value=""></textarea>
+            </div>
+            
+            <div>
+                Fill in the data for course components, note that course components with no provided name will be ignored:
+            </div> 
+            <div id="delMom">
+                <div class='smallInfoMsg'>
+                    Course component 1*:
+                </div> 
+                <label class="labels2">Name:</label>
+                <input class="fields2" id="dmc1" type="text" value=""></input>
+                <label class="labels2">Points:</label>
+                <input class="fields2" id="dmp1" type="text" value=""></input>
+                <div class='smallInfoMsg'>
+                    Course component 2*:
+                </div> 
+                <label class="labels2">Name:</label>
+                <input class="fields2" id="dmc2" type="text" value=""></input>
+                <label class="labels2">Points:</label>
+                <input class="fields2" id="dmp2" type="text" value=""></input>
+                <div class='smallInfoMsg'>
+                    Course component 3:
+                </div> 
+                <label class="labels2">Name:</label>
+                <input class="fields2" id="dmc3" type="text" value=""></input>
+                <label class="labels2">Points:</label>
+                <input class="fields2" id="dmp3" type="text" value=""></input>
+            </div>
+
+
+
+ 
+            <p class='smallInfoMsg'>Here you can add info about course offerings (You can edit reported number of students later):</p>
+			<div class='smallInfoMsg'>Course Offering*</div><br><br>
+            <div id="offering">
+            </div>
+            <div class="lab-in">
+                <button type="submit" class="fields4" id="addOffering"  >Add another  offering</button>
+            </div>
+            <div class="lab-in">
+                <button type="submit" class="fields4" id="removeOffering"  >Remove  offering</button>
+            </div>
+            
+                       <p class='smallInfoMsg'>Here you can add this course to existing programs:</p>
+            <div id="info">
+                
+
+            </div>
+
+
+        
+
+            <div class="lab-in">
+                <br><br><button type="submit" class="fields3" id="addMoreProg"  >Add course under a program</button>
+            </div> 
+            
+            <div class="lab-in">
+                <button type="submit" class="fields3" id="removeProg"  >Remove program info</button>
+            </div>
+ 
+
+            <div class="lab-in">
+                <button type="submit" class="fields" id="subBtn"  >Update</button>
+            </div>
+            
+            </div>
+
+        <footer id="footer">12-12-2013</footer>
+
+ 
+
+    <style type="text/css">
+
+
+    #subBtn{
+        background-color: #333333;
+        height: 40px;
+        width: 100%;
+        border: none;
+        color:white;
+        font-weight: 500;
+        font-size: large;
+        margin-top: 5%;
+    }
+    .infoMsg{
+        margin:auto;
+        text-align: center;
+        width: 70%;
+        font-weight: 999;
+        margin-top: 3%;
+        margin-bottom: 9%;
+        font-size: x-large;
+    }   
+    .smallInfoMsg{
+        font-weight: 550;
+        margin-top: 6%;
+        font-size: medium;
+        color: darkred;
+        margin-bottom: -8px;
+    }
+
+    .fields{
+            display: block;
+            width:100%;
+            border: #333333;;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+    }    
+
+
+    .labels{
+        display: block;
+        padding: 5px;
+        font-weight: 900;
+
+    }
+    .lab-in{
+        padding-bottom:15px;
+
+    }
+
+
+    #delMom input[type="text"], .inputs textarea{
+        padding:8px;
+	    width:40%;
+        padding: 9px;
+        margin-top: 10px;
+    }
+
+    .dropMenu{
+        width:102%;
+        height: 34px;
+        margin:auto;
+        margin-bottom: 2%;
+        margin-top: 1.5%;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 5px;
+    }
+
+    .inputs{
+        width:55%;
+        margin:auto;
+        margin-bottom: 10%;
+        margin-top: 1.5%;
+    }
+    .inputs input[type="text"], .inputs textarea{
+        padding:8px;
+	    width:100%;
+    }
+    .inputs textarea{
+        height: 80px;
+    }
+  
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 18%;
+        
+
+    }
+    
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    }    
+    .menuElement{
+        color:red;
+        font-style: normal;
+        border-style: inset;
+        border-radius: 10px;
+    }
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+    .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+        }
+
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+
+
+    }
+    </style>
+
+    <script>
+function selectItemByValue(drpDwn, value){
+    let arrOpts=drpDwn.options;
+    console.log(arrOpts.length); 
+    console.log(drpDwn.options); 
+
+    for(var i=0; i < drpDwn.options.length; i++){
+        console.log("looped"); 
+
+        if(drpDwn.options[i].value === value) {
+            drpDwn.selectedIndex = i;
+            break;
+        }
+    }
+}
+//BEG. OF THE NEW PART
+
+	//This gets course object from db using courseCode that is stored in cookies
+	let jsonReq = new XMLHttpRequest();
+	courseCodeFromCookie=getCookie("courseToshowOrEdit");
+	let courseAsJSObject;
+	jsonReq.open('GET', 'GetCourse?courseID=0&code='+ courseCodeFromCookie, true);
+	jsonReq.onload = function() {
+	    if (jsonReq.status == 200) {
+	        console.log(jsonReq.responseText); 
+	
+	        courseAsJSObject=JSON.parse(jsonReq.responseText);  //Now JSON is converted to JS object so that we can access its inner datamembers with . operator
+            console.log("here 1!");
+
+	        //Do stuff (Pass courseAsJSObject as a parameter to some function that fills field in page):
+	        fillFields(courseAsJSObject);   //Function not written yet
+	
+	    } else {
+	        document.getElementById("errorMsg").value = jsonReq.statusText;
+	    }
+    }
+
+	jsonReq.send();
+
+function getCookie(cName) {
+	var name = cName + "=";
+	var cookies = document.cookie;
+	var coockiesArr = cookies.split(';');	//Splits string into array of string using ; as delimiter
+	for(var i = 0; i <coockiesArr.length; i++) {
+		var singleCookie= coockiesArr[i];
+		while (singleCookie.charAt(0) == ' ') {	//To remove spaces
+		singleCookie= singleCookie.substring(1);
+		}
+		if (singleCookie.indexOf(name) == 0) {
+			return singleCookie.substring(name.length, singleCookie.length);	 
+		}
+	}
+	return "";
+}     
+
+let nrOfOfferingForms=1;
+
+let offeringHTML=
+        '<label class="labels4">Number of admited students:</label>'+
+        '<input type="number"  min="1" max="500" class="fields4 expectedNr">'+
+        '<label  class="labels4">Number of reported students:</label>'+
+        '<input type="number"  min="1" max="500" class="fields4 reportedNr">'+
+        '<label class="labels4">Calender Year:</label>'+
+        '<input type="number"  min="2000" max="2100" class="fields4 calYear">'+
+            '<div class="teacherDropMnuDiv">'+
+                '<label class="labels4">Teacher*:</label> '+
+                '<select class=" dropMenu teacher" >'+
+                '</select> '+
+                '<label class="labels4">Percentage*:</label>'+
+                '<input type="number"  min="1" max="100" class="fields4 percentage">'+
+                '<br><br>'+
+                '<label class="labels4">Teacher 2:</label> '+
+                '<select class=" dropMenu teacher2" >'+
+                '</select> '+
+                '<label class="labels4">Percentage:</label>'+
+                '<input type="number"  min="1" max="100" class="fields4 percentage2">'+
+                '<br><br>'+
+                '<label class="labels4">Teacher 3:</label> '+
+                '<select class=" dropMenu teacher3" >'+
+                '</select> '+
+                '<label class="labels4">Percentage:</label>'+
+                '<input type="number"  min="1" max="100" class="fields4 percentage3">'+
+                '<br><br>'+
+            '</div>';
+
+let nrOfProgForms=0;    
+//Program
+let infoHTML=   '<div class="smallInfoMsg">Program</div><br><br>'+
+				'<label class="labels3">Name:</label> '+
+                '<select   class="program dropMenu choices" >'+
+                '</select> '+
+                //Branch
+                '<label class="labels3">Branch:</label> '+
+                '<select  class="dropMenu branch">'+
+                '</select> '+
+                //Obligatory
+                '<input class="fields3 obligatory" type="checkbox">'+
+                '<label >Course is obligatory for this program</label>'+
+                '<br>'+
+                //Year
+                '<label class="labels3">School year (1-5):</label>'+
+                '<select class="labels3 year">'+
+                '<option value="1">1</option>'+
+                '<option value="2">2</option>'+
+                '<option value="3">3</option>'+
+                '<option value="4">4</option>'+
+                '<option value="5">5</option>'+
+                '</select>'+       
+                //Periods
+                '<br><br>'+
+                '<label class="labels3">Periods:</label>'+
+                '<input type="checkbox" class="period1"  value="P1" unchecked>'+
+                '<label class="labels3" > P1</label>'+
+                '<input type="checkbox" class="period2"  value="P2" unchecked>'+
+                '<label class="labels3" > P2</label>'+
+
+                '<input type="checkbox" class="period3"  value="P3" unchecked >'+
+                '<label class="labels3"  > P3</label>'+
+
+                '<input type="checkbox" class="period4" value="P4"  unchecked>'+
+                '<label class="labels3"  > P4</label><br>'+
+
+                '<br><br>'+
+                //Points
+                '<label class="fields3"  >Points for P1:</label>'+
+                '<input class="periodPoints1"  type="text" ></input>'+
+
+                '<label class="fields3"   >Points for P2:</label>'+
+                '<input class="periodPoints2"   type="text" value=""></input>'+
+
+                '<label class="fields3" >Points for P3:</label>'+
+                '<input class="periodPoints3" type="text" value=""></input>'+
+
+                '<label class="fields3"  >Points for P4:</label>'+
+                '<input class="periodPoints4"   type="text" value=""></input>';
+
+	function fillFields(courseToDisplay){
+ 
+		document.getElementById("en").value = courseToDisplay.enName;
+		document.getElementById("sv").value = courseToDisplay.swName;
+		document.getElementById("cCode").value = courseToDisplay.code;
+		document.getElementById("co").value = courseToDisplay.coOrd;
+		document.getElementById("hit").value = courseToDisplay.history;
+		document.getElementById("tch").value = courseToDisplay.examiner;
+		document.getElementById("com").value = courseToDisplay.progress;
+		
+		fillCourseElements(courseToDisplay);
+		fillCourseInfo(courseToDisplay);
+		fillCourseOfferings(courseToDisplay);
+	
+	}
+
+	function fillCourseElements(courseToDisplay){
+			let elementsArr = courseToDisplay.elements;
+			for(i=0; i < elementsArr.length; i++){
+				document.getElementById("dmc"+(i+1)).value = elementsArr[i].name;
+				document.getElementById("dmp"+(i+1)).value = elementsArr[i].points;
+			}
+	}
+	
+    function fillCourseInfo(courseToDisplay){
+
+
+            //Create div skeleton
+            let infoArr=courseToDisplay.courseInfo;
+            let nrOfInfo=infoArr.length;
+
+            for(i=0;i<nrOfInfo;i++){
+                
+                document.getElementById("info").innerHTML+=infoHTML;
+                addProgChoices(i);                  
+                addBranchChoices(i); 
+                nrOfProgForms++;
+            }
+            //fill in data
+            let programArrHTML=document.getElementsByClassName("program");
+            let branchArrHTML=document.getElementsByClassName("branch");
+            let obligatoryArrHTML=document.getElementsByClassName("obligatory");
+            let schYearArrHTML=document.getElementsByClassName("year");
+
+            let periods1ArrHTML=document.getElementsByClassName("period1");
+            let periods2ArrHTML=document.getElementsByClassName("period2");
+            let periods3ArrHTML=document.getElementsByClassName("period3");
+            let periods4ArrHTML=document.getElementsByClassName("period4");
+            let peoints1ArrHTML=document.getElementsByClassName("periodPoints1");
+            let peoints2ArrHTML=document.getElementsByClassName("periodPoints2");
+            let peoints3ArrHTML=document.getElementsByClassName("periodPoints3");
+            let peoints4ArrHTML=document.getElementsByClassName("periodPoints4");
+
+            for(i=0;i<nrOfInfo;i++){
+                programArrHTML[i].value=infoArr[i].program;
+            }
+            for(i=0;i<nrOfInfo;i++){
+                branchArrHTML[i].value=infoArr[i].branch;
+            }
+            for(i=0;i<nrOfInfo;i++){
+
+                if(infoArr[i].obligatory){
+                    obligatoryArrHTML[i].checked=true;
+                }else{
+                    obligatoryArrHTML[i].checked=false;
+                }
+            }
+            for(i=0;i<nrOfInfo;i++){
+                schYearArrHTML[i].value=infoArr[i].year;
+            }
+            for(i=0;i<nrOfInfo;i++){
+                //Reads array of periods of this info object and stores it in periodsOfThisCourseArr in order to loop through it
+                
+                let periodsOfThisCourseArr=infoArr[i].periods;
+
+                for(j=0;j<periodsOfThisCourseArr.length;j++){
+
+                    if(periodsOfThisCourseArr[j].period==1){
+                        
+                        periods1ArrHTML[i].checked=true;
+                        //Reads points and writes them
+
+                        console.log(periodsOfThisCourseArr[j].points);
+
+                        peoints1ArrHTML[i].value=periodsOfThisCourseArr[j].points;
+                    }
+                    if(periodsOfThisCourseArr[j].period==2){
+                        periods2ArrHTML[i].checked=true;
+                        peoints2ArrHTML.value=periodsOfThisCourseArr[j].points;
+                    }
+                    if(periodsOfThisCourseArr[j].period==3){
+                        periods3ArrHTML[i].checked=true;
+                        peoints3ArrHTML.value=periodsOfThisCourseArr[j].points;
+                    }
+                    if(periodsOfThisCourseArr[j].period==4){
+                        periods4ArrHTML[i].checked=true;
+                        peoints4ArrHTML.value=periodsOfThisCourseArr[j].points;
+                    }
+                
+                
+                }
+            }
+            
+    }
+
+
+function fillCourseOfferings(courseToDisplay){
+        
+    let offeringsArr=courseToDisplay.courseOfferings;
+    let nrOfOfferings=offeringsArr.length;
+
+    //Empty form is left until page is loaded, then deleted in order to add it/them in prpper quatity depending on how many offerings the course has
+    document.getElementById("offering").innerHTML="";
+    
+    for(i=0;i<nrOfOfferings;i++){
+        if(i==0) document.getElementById("offering").innerHTML+= offeringHTML;
+		else document.getElementById("offering").innerHTML+= "<div class='smallInfoMsg'>Course Offering</div><br><br>" + offeringHTML;
+        addTeacherChoices(i);                  
+    }
+    let expectArrHTML=document.getElementsByClassName("expectedNr");
+    let reportedArrHTML=document.getElementsByClassName("reportedNr");
+    let yearArrHTML=document.getElementsByClassName("calYear");
+
+    let teach1ArrHTML=document.getElementsByClassName("teacher");
+    let perc1ArrHTML=document.getElementsByClassName("percentage");
+    let teach2ArrHTML=document.getElementsByClassName("teacher2");
+    let perc2ArrHTML=document.getElementsByClassName("percentage2");
+    let teach3ArrHTML=document.getElementsByClassName("teacher3");
+    let perc3ArrHTML=document.getElementsByClassName("percentage3");
+
+    //Add expected nr oh students
+    for(i=0;i<nrOfOfferings;i++){
+        expectArrHTML[i].value=offeringsArr[i].expectedStu;
+    }
+
+    //Add reported nr oh students
+    for(i=0 ;i<nrOfOfferings;i++){
+        reportedArrHTML[i].value=offeringsArr[i].reportedStu;
+    }
+
+    //Add year
+    for(i=0 ;i<nrOfOfferings;i++){
+        yearArrHTML[i].value=offeringsArr[i].year;
+    }
+    //Add teacher/percentage
+    //setTimeout(donothing, 4000);
+
+
+    for(i=0 ;i<nrOfOfferings;i++){
+        let jsTeacherArr=offeringsArr[i].teachers;
+        teach1ArrHTML[i].value=jsTeacherArr[0].teacher;    //1st teacher is obligatory
+        perc1ArrHTML[i].value=jsTeacherArr[0].percentage;    //1st teacher is obligatory
+
+        if(jsTeacherArr.length>1)            //If there is more than 1 then add 2nd
+        {
+            console.log("called");
+            
+            //teach2ArrHTML[i].value=jsTeacherArr[1].teacher;  
+            let teachDrpDwn2=teach2ArrHTML[i]; 
+            let teach2Name=jsTeacherArr[1].teacher; 
+            //selectItemByValue(teachDrpDwn2, teach2Name);
+            document.getElementsByClassName("teacher2").selectedIndex=1;
+            perc2ArrHTML[i].value=jsTeacherArr[1].percentage; 
+        }
+
+        if(jsTeacherArr.length>2)            //If there is more than 2 then add 2rd
+        {
+            teach3ArrHTML[i].value=jsTeacherArr[2].teacher;   
+            perc3ArrHTML[i].value=jsTeacherArr[2].percentage; 
+        }
+    }
+
+}
+//END OF THE NEW PART
+function donothing(){};
+//ADD/REMOVE OFFERING BUTTONS HANDLERS
+document.getElementById("addOffering").addEventListener("click", function(){
+    document.getElementById("offering").innerHTML+= "<div class='smallInfoMsg'>Course Offering</div><br><br>" + offeringHTML;
+    addTeacherChoices(nrOfOfferingForms);                  
+    nrOfOfferingForms++;
+});
+
+document.getElementById("removeOffering").addEventListener("click", function(){
+    if(nrOfOfferingForms==1)
+    {
+        window.alert("There should at least be one offering!");
+        return;
+    }
+    document.getElementById("offering").innerHTML="";
+    for(i=0;i < nrOfOfferingForms-1;i++) {
+        addTeacherChoices(i);                  
+        if(i==nrOfOfferingForms-2) document.getElementById("offering").innerHTML+= offeringHTML;
+		else document.getElementById("offering").innerHTML+= offeringHTML + "<div class='smallInfoMsg'>Course Offering</div><br><br>";
+        
+    }                
+    nrOfOfferingForms--;
+
+});
+
+//This adds a new form for program ie course offering when user clicks on button
+
+document.getElementById("addMoreProg").addEventListener("click", function(){
+    document.getElementById("info").innerHTML+= infoHTML;
+    addProgChoices(nrOfProgForms);                  
+    addBranchChoices(nrOfProgForms);                  
+    nrOfProgForms++;
+});
+//This removesa a form for program ie course offering when user clicks on button 
+
+document.getElementById("removeProg").addEventListener("click", function(){
+    document.getElementById("info").innerHTML="";
+    for(i=0;i < nrOfProgForms-1;i++) {
+        document.getElementById("info").innerHTML+= infoHTML;
+        addProgChoices(i);                  
+        addBranchChoices(i); 
+        
+    }                
+    nrOfProgForms--;
+
+});
+   
+
+        //This only updates date at footer
+        document.getElementById("footer").innerHTML=new Date();	//Current date to be displayed at the buttom of the page
+
+        //userful function when needed
+        function isNr(nr){
+            return !Number.isNaN(parseDouble(nr));
+        }
+
+        function capitalize(){	//switch letters to upper case when called (which is in "setonblur" up in html code). Setonblurs is triggered when the user clicks away
+            document.getElementById("cCode").value=document.getElementById("cCode").value.toUpperCase();
+        }
+
+        //Adds options after retriving from db (Ramy)
+        addProgChoices(0);addBranchChoices(0);addTeacherChoices(0);
+        //Add programs to drop down mnu addTeacherChoices (Ramy)
+        function addBranchChoices(nr){
+            
+            let branchListReq= new XMLHttpRequest();
+            branchListReq.open('GET','/MTHDB/GetListOfBranches',true); 
+            branchListReq.onload=function(){
+            if(branchListReq.status==200){
+                addBranches(branchListReq, nr);
+
+                //var x=Req.getResponseHeader('nrOfPrograms');
+                
+                }
+            }   
+            branchListReq.send();
+        }
+
+        //(Ramy)
+        function addBranches(branchListReq,nr) {
+
+            let json = JSON.parse(branchListReq.responseText);
+            let branches=json.branches;
+            let mnuBody="";
+            for(  i =0;i<branches.length;i++){
+                mnuBody+='<option value=';
+                mnuBody+='"';
+                mnuBody+=branches[i];
+                mnuBody+='"';
+                mnuBody+='>';
+                mnuBody+=branches[i];
+                mnuBody+='</option>';
+            }
+            document.getElementsByClassName('branch')[nr].innerHTML=mnuBody;
+
+         }
+
+
+
+        //Add programs to drop down mnu (Ramy)
+        function addProgChoices(nr){
+            
+        let progListReq= new XMLHttpRequest();
+             progListReq.open('GET','/MTHDB/GetListOfProgs',true); 
+             progListReq.onload=function(){
+                if(progListReq.status==200){
+                    addPrograms(progListReq, nr);
+
+                    //var x=Req.getResponseHeader('nrOfPrograms');
+                    
+                }
+            }
+            progListReq.send();
+        }
+  //addTeacherChoices(nrOfTeacherForms);  (Ramy)
+        function addPrograms(progListReq,nr) {
+
+            let json = JSON.parse(progListReq.responseText);
+            let pros=json.programs;
+            let mnuBody="";
+            for(  i =0;i<pros.length;i++){
+                mnuBody+='<option value=';
+                mnuBody+='"';
+                mnuBody+=pros[i];
+                mnuBody+='"';
+                mnuBody+='>';
+                mnuBody+=pros[i];
+                mnuBody+='</option>';
+            }
+            console.log(nr);
+            
+            document.getElementsByClassName('program')[nr].innerHTML=mnuBody;
+
+         }
+
+        //Add programs to drop down mnu (Ramy)
+        function addTeacherChoices(nr){
+            
+            let teacherListReq= new XMLHttpRequest();
+                teacherListReq.open('GET','/MTHDB/GetListOfTeachers',true); 
+                teacherListReq.onload=function(){
+                    if(teacherListReq.status==200){
+                        addTeachers(teacherListReq, nr);
+
+                        //var x=Req.getResponseHeader('nrOfPrograms');
+                        
+                    }
+                }
+                teacherListReq.send();
+        }
+		
+        //addTeacherChoices(nrOfTeacherForms);   (Ramy)
+        function addTeachers(teacherListReq,nr) {
+
+            let json = JSON.parse(teacherListReq.responseText);
+            let teachers=json.teachers;
+            let mnuBody="";
+            for(  i =0;i<teachers.length;i++){
+                mnuBody+='<option value=';
+                mnuBody+='"';
+                mnuBody+=teachers[i];
+                mnuBody+='"';
+                mnuBody+='>';
+                mnuBody+=teachers[i];
+                mnuBody+='</option>';
+            }
+            document.getElementsByClassName('teacher')[nr].innerHTML=mnuBody;
+            document.getElementsByClassName('teacher2')[nr].innerHTML=mnuBody;
+            document.getElementsByClassName('teacher3')[nr].innerHTML=mnuBody;
+
+         }
+
+
+         //Handling "Submit" button
+        document.getElementById('subBtn').addEventListener('click',submitCourse);
+            function submitCourse(e){
+                e.preventDefault();	//By default button sumbits and user is redirected to new webpage, this is to stop that
+
+                //Most of this function is checking if enterd data is entered correctly
+
+
+                let en= document.getElementById('en');
+                let enStr=en.value.toString();
+                if(enStr.length==0){
+                    window.alert("English course name cannot be empty");
+                    return;
+                }
+
+                let sv= document.getElementById('sv');
+                let svStr=sv.value.toString();
+                if(svStr.length==0){
+                    window.alert("Swedish course name cannot be empty");
+                    return;
+                }
+
+                let reg=new RegExp("^[A-z]{2}[0-9]{4}$");	//Regular expression to match Course code with
+                let coCode= document.getElementById('cCode');
+                let kh=coCode.value.toString();
+                let isMatch=kh.match(reg);
+                if(!isMatch){
+                    window.alert("Course code should be in the following form: XX0000");
+                    return;
+                }
+
+
+                let dmc1= document.getElementById('dmc1');
+                let dmc1Str=dmc1.value.toString();
+                if(dmc1Str.length==0){
+                    window.alert("You cannot leave name for component 1 empty");
+                    return;
+                }
+
+       
+                let dmp1= document.getElementById('dmp1');
+                let dmp1Str=dmp1.value.toString();
+                if(dmp1Str.length==0){
+                    window.alert("You cannot leave points for component 1 empty");
+                    return;
+                }
+
+
+                let dmc2= document.getElementById('dmc2');
+                let dmc2Str=dmc2.value.toString();
+                if(dmc2Str.length==0){
+					window.alert("You cannot leave name for component 2 empty");
+                }
+				
+			    let dmp2= document.getElementById('dmp2');
+                let dmp2Str=dmp2.value.toString();
+                if(dmp2Str.length==0){
+                    window.alert("You cannot leave points for component 2 empty");
+                    return;
+                }
+				
+                let dmc3= document.getElementById('dmc3');
+                let dmc3Str=dmc3.value.toString();
+                if(dmc3Str.length!=0){
+
+
+                    let dmp3= document.getElementById('dmp3');
+                    let dmp3Str=dmp3.value.toString();
+                    if(dmp3Str.length==0){
+                        window.alert("You cannot leave points for component 3 empty");
+                        return;
+                    }
+
+                }
+                let isMatch2=Number.isNaN(parseDouble(dmp1Str));
+                if(isMatch2){
+                    window.alert("Points should be a number");
+                    return;
+                }
+              
+                //Delmoment
+                if(document.getElementById('dmc1').value=="" || document.getElementById('dmp1').value=="" || document.getElementById('dmc2').value=="" || document.getElementById('dmp2').value==""){
+                    window.alert("You should at least add 2 parts under course, make sure you added name as well as points.");
+                        return;
+                }
+
+                if( !isNr(document.getElementById('dmp1').value) || !isNr(document.getElementById('dmp2').value))
+                {
+                    window.alert("Points can only be represented in numbers.");
+                        return;
+                }
+
+
+                let element1={name:document.getElementById('dmc1').value, points:document.getElementById('dmp1').value};
+                let elementsArr=[element1];
+
+                let element2={name:document.getElementById('dmc2').value, points:document.getElementById('dmp2').value};
+                elementsArr[elementsArr.length]=element2;
+
+                if(document.getElementById('dmc3').value!="")
+                {
+                    let element3={name:document.getElementById('dmc3').value, points:document.getElementById('dmp3').value};
+                    elementsArr[elementsArr.length]=element3;
+                }
+              
+
+                //Course offering (Ramy)
+                let expectedNrArr = document.getElementsByClassName("expectedNr");
+                let reportedNrArr = document.getElementsByClassName("reportedNr");
+                let calYearArr = document.getElementsByClassName("calYear"); 
+                let teacherArr = document.getElementsByClassName("teacher");
+                let percentageArr = document.getElementsByClassName("percentage");
+                let teacher2Arr = document.getElementsByClassName("teacher2");
+                let percentage2Arr = document.getElementsByClassName("percentage2");
+                let teacher3Arr = document.getElementsByClassName("teacher3");
+                let percentage3Arr = document.getElementsByClassName("percentage3");
+                let courseOfferingArr=[];
+
+
+
+                for (let i = 0; i < calYearArr.length; i++) {
+                    
+                let expectNr=expectedNrArr[i].value;
+                let repNr=reportedNrArr[i].value; 
+                let caY=calYearArr[i].value;
+                let teach1=teacherArr[i].value;
+                let prec1=percentageArr[i].value;
+                let teach2=teacher2Arr[i].value;
+                let prec2=percentage2Arr[i].value;
+                let teach3=teacher3Arr[i].value;
+                let prec3 =percentage3Arr[i].value;
+                let teachPerc = [];
+                    if(caY=="" || expectNr==""||repNr==""){
+                        window.alert("You cannot leave year/expected/reported number of students in course offering empty.");
+                        return;
+                    }
+                    
+                    if(prec1==""||prec1==undefined){
+                            window.alert("First teacher in course offering is required");
+                            return;
+                    }else{
+                        teachPerc[teachPerc.length]={teacher:teach1,percentage:prec1};
+                    }
+
+                    if(prec2!=""&&prec2!=undefined){
+                        teachPerc[teachPerc.length]={teacher:teach2,percentage:prec2};
+
+                    }
+                    if(prec3!=""&&prec3!=undefined){
+                        teachPerc[teachPerc.length]={teacher:teach3,percentage:prec3};
+
+                    }
+                    
+                    courseOfferingArr[courseOfferingArr.length]={year:caY,expectedStu:expectNr,reportedStu:repNr,teachers:teachPerc};
+
+ 
+                }
+              
+            
+
+                //Course info 
+                let programArr = document.getElementsByClassName("program");
+                let branchArr = document.getElementsByClassName("branch");
+                let obligatoryArr = document.getElementsByClassName("obligatory"); 
+                let yearArr = document.getElementsByClassName("year");
+                let period1Arr = document.getElementsByClassName("period1");
+                let period2Arr = document.getElementsByClassName("period2");
+                let period3Arr = document.getElementsByClassName("period3");
+                let period4Arr = document.getElementsByClassName("period4");
+                let periodPoints1Arr = document.getElementsByClassName("periodPoints1");
+                let periodPoints2Arr = document.getElementsByClassName("periodPoints2");
+                let periodPoints3Arr = document.getElementsByClassName("periodPoints3");
+                let periodPoints4Arr = document.getElementsByClassName("periodPoints4");
+                let courseInfoArr=[];
+
+                for (let i = 0; i < programArr.length; i++) {
+                    
+                    let prog=programArr[i].value;
+                    let bra=branchArr[i].value;
+                    let oblig=obligatoryArr[i].checked;
+                    let schYear=yearArr[i].value;
+                    if(prog="Högskoleingenjörsprogrammet")
+                    {
+                        if(schYear>3)
+                            {
+                                window.alert("Bachelor's degree programs do not have years beyond 3")
+                            }
+                    }
+                    if(prog==""||bra==""||schYear=="" ){
+                        window.alert("Looks like you left some fields empty under course info");
+                        return;
+                    }
+                    if(!(period1Arr[i].checked)&&!(period2Arr[i].checked)&&!(period3Arr[i].checked)&&!(period4Arr[i].checked)){
+                        window.alert("You should at least include one period for course (Under Course info)")
+                    }
+                    let periodPts=[];
+                    if(period1Arr[i].checked){
+                        if(periodPoints1Arr[i].value==""){
+                            window.alert("You cannot leave points feild empty for  a period that you set to checked");
+                            return;
+                        }
+                        periodPts[periodPts.length]={period : "1", points:parseFloat(periodPoints1Arr[i].value)};
+                    }
+                    if(period2Arr[i].checked){
+                        if(periodPoints2Arr[i].value==""){
+                            window.alert("You cannot leave points feild empty for  a period that you set to checked");
+                            return;
+                        }
+                        periodPts[periodPts.length]={period : "2", points:parseFloat(periodPoints2Arr[i].value)};
+                    }
+                    if(period3Arr[i].checked){
+                        if(periodPoints3Arr[i].value==""){
+                            window.alert("You cannot leave points feild empty for  a period that you set to checked");
+                            return;
+                        }
+                        periodPts[periodPts.length]={period : "3", points:parseFloat(periodPoints3Arr[i].value)};
+                    }
+                    if(period4Arr[i].checked){
+                        if(periodPoints4Arr[i].value==""){
+                            window.alert("You cannot leave points feild empty for  a period that you set to checked");
+                            return;
+                        }
+                        periodPts[periodPts.length]={period : "4", points:parseFloat(periodPoints4Arr[i].value)};
+                    }
+                    
+                    courseInfoArr[courseInfoArr.length]={program:prog,branch:bra,year:schYear,obligatory:oblig,periods:periodPts};
+
+            }
+                
+				let cPoints = parseDouble(document.getElementById("dmp1").value) + parseDouble(document.getElementById("dmp2").value);
+				if(isNr(parseDouble(document.getElementById("dmp3").value))) cPoints+= parseDouble(document.getElementById("dmp3").value);
+
+           
+                let updatedCourse={	//Json creatiion. names of attributes here should match ones in backend (model)
+                    enName : document.getElementById('en').value,
+             
+                    swName : document.getElementById('sv').value,
+             
+                    code : document.getElementById('cCode').value,
+                    
+                    points: cPoints,
+                
+                    coOrd : document.getElementById('co').value,
+                    
+                    examiner : document.getElementById('tch').value,
+             
+                    history : document.getElementById('hit').value,
+             
+                    progress : document.getElementById('com').value,
+                      
+                    courseInfo : courseInfoArr,
+
+                    courseOfferings : courseOfferingArr,
+
+                    elements : elementsArr
+
+                }
+
+                let coJson=JSON.stringify(updatedCourse);	//Stringify turns json to string form in order to send it
+                let jsonReq= new XMLHttpRequest();
+                jsonReq.open('POST','/MTHDB/UpdateCourse',true);   //Should be replced with edit course servlet (John)
+                jsonReq.onload=function(){	//Onload is when servlet has sent the respons (and the response received by the browser)
+                    if(jsonReq.status==200){	//Status 200=success
+                        if(jsonReq.responseText=="1");	//1 is hardcoded in servlet to send after success
+                            window.alert("Course updated. Press OK to continue");
+
+        	        }else{
+                        document.getElementById("errorMsg").value=jsonReq.statusText;
+        	        }
+        	    }
+                jsonReq.send(coJson);	//If the page were not sending a json, the function send()= would need no argument
+            }
+            //Check active session
+        document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+           
+    </script>
+    </body>
+
+</html>

@@ -1,0 +1,127 @@
+<!–– Author: Ramy ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>MTHDB Homepage</title>
+
+    </head>
+    <body>
+    <div id="mainDiv">
+        <div class="title">MTHDB View
+        </div>
+        <div><a class="logoutBtn" href="logout.html" >Logout</a>
+        </div>
+            <table class="mainMenu">
+                <tr>
+                    <th class="menuElement"><a href="index.html?">Home</a></th>
+                    <th class="menuElement"><a href="ShowTeacher.html?">Staff</a></th>
+                    <th class="menuElement"><a href="ShowCourse.html?">Courses</a></th>
+                    <th class="menuElement"><a href="ShowProgram.html?">Program</a></th>
+                </tr>
+            
+            </table>
+        <div id="wlcomMsg">
+            <p><strong> Welcome to the database!</strong><br>Please click one of the choices a from the table above to start viewing and manupulation the data..</p>
+        </div>
+        
+        </div>
+         <footer id="footer">12-12-2013</footer>
+    </body>
+
+    <style type="text/css">
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 25%; 
+        
+
+    }
+    
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    }    
+    .menuElement{
+        color:red;
+        font-style: normal;
+        border-style: inset;
+        border-radius: 10px;
+    }
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+        .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+    }
+
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+
+
+    }
+    </style>
+
+    <script>
+        document.getElementById("footer").innerHTML=new Date();
+        
+  
+        //Check active session
+        document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+
+    </script>
+</html>

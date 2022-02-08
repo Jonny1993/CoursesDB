@@ -1,0 +1,361 @@
+<!–– Author: Therese ––>
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Browse Teachers - MTHDB</title>
+
+</head>
+    
+<body>
+<div id="mainDiv">
+    <div class="title">MTHDB View
+    </div>
+    <div><a class="logoutBtn" href="logout.html" >Logout</a>
+    </div>
+        <table class="mainMenu">
+            <tr>
+               <th class="menuElement"><a href="index.html">Home</a></th>
+               <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+               <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+               <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+            </tr>
+        
+        </table>
+ 
+    <form action="AddTeacher.html">
+        <input class="linkBtn" type="submit" value="Add new staff" />
+    </form>
+    <form action="ShowTeacher.html">
+        <input class="linkBtn" type="submit" value="Search teachers" />
+    </form>
+    
+    
+    
+<p id="msg">List of all teachers</p>
+    
+<p id="errorMsg"></p>
+
+
+<div class="list">
+	<ul id="listOfTeachers" style="list-style-type:none;">
+	</ul>
+</div>
+
+
+
+<div id="btns">
+	<input type="image" id="browsePrev" alt="Previous" src="b2.svg">
+	<input type="image" id="browseNxt" alt="Next" src="b2.svg">
+</div>
+
+
+
+
+<form>
+<input id= "courseID" type="hidden" name="courseID" value=-1 />
+</form>
+
+
+
+<script>
+
+let browseID = 0;
+
+function getTeachers() {
+	//Starts from beginnig
+	let jsonReq = new XMLHttpRequest();
+
+	//Gets 10 courses
+	jsonReq.open('GET', 'Get10Teachers?courseID=' + browseID, true);
+	jsonReq.onload = function() {
+		if (jsonReq.status == 200) {
+			listMaker(jsonReq.responseText);
+			
+			var lastCourse = jsonReq.getResponseHeader('isLastPage');
+			if(lastCourse == 1)
+				document.getElementById("browseNxt").style.visibility = "hidden";
+			
+		} else {
+			document.getElementById("errorMsg").value = jsonReq.statusText;
+		}
+	}
+	jsonReq.send();
+}
+
+
+//Function that creats HTML code for table
+function listMaker(responseText) {
+	let json = JSON.parse(responseText);
+	let teachers = json.teachers;
+
+	var node;
+	var linkNode;
+	var textNode;
+
+	for(i = 0; i < teachers.length; i++) {
+		
+		//<li> <a href="http://google.com"> Teachers name </a> </li>
+		node = document.createElement("li");
+		linkNode = document.createElement("a");
+		textNode = document.createTextNode(teachers[i].name);
+		
+		linkNode.setAttribute('href', "TeacherInfo.html?phrase=" + teachers[i].email);
+		linkNode.appendChild(textNode);
+		node.appendChild(linkNode);
+		
+		document.getElementById("listOfTeachers").appendChild(node);
+	}
+
+	//Hides prev btn
+	document.getElementById("browsePrev").style.visibility = "hidden";
+}
+
+getTeachers();
+
+</script>
+
+
+
+
+<script>
+
+document.getElementById('browseNxt').addEventListener('click', getNxt);
+function getNxt(e) {
+	e.preventDefault();
+		
+	
+	browseID += 10;
+	let jsonReq = new XMLHttpRequest();
+
+	//Gets 10 teachers
+	jsonReq.open('GET', 'Get10Teachers?courseID=' + browseID, true);
+	jsonReq.onload = function() {
+		if (jsonReq.status == 200) {
+			clearList();
+			listMaker(jsonReq.responseText);
+			
+			//If Prev btn was hidden make it visible
+			document.getElementById("browsePrev").style.visibility = "visible";
+			
+			//If last teacher reached, hide nxt btn
+			var lastCourse = jsonReq.getResponseHeader('isLastPage');
+			if(lastCourse == 1)
+				document.getElementById("browseNxt").style.visibility = "hidden";
+		}else {
+			document.getElementById("errorMsg").value = jsonReq.statusText;
+		}
+	}
+	jsonReq.send();
+}
+
+
+
+document.getElementById('browsePrev').addEventListener('click', getPrev);
+function getPrev(e) {
+	e.preventDefault();
+	
+	browseID -= 10;
+	let jsonReq = new XMLHttpRequest();
+	
+	//Gets 10 Teachers
+	jsonReq.open('GET', 'Get10Teachers?courseID=' + browseID, true);
+	jsonReq.onload = function() {
+		if (jsonReq.status == 200) {
+			clearList();
+			listMaker(jsonReq.responseText);
+			
+			//If nxt btn was hidden make it visible
+			document.getElementById("browseNxt").style.visibility = "visible";
+			
+			//If first page page reached hide prev btn
+			if(browseID == 0)
+				document.getElementById("browsePrev").style.visibility = "hidden";
+		}else {
+			document.getElementById("errorMsg").value = jsonReq.statusText;
+		}
+	}
+	jsonReq.send();
+}
+
+
+function clearList() {
+	document.getElementById("listOfTeachers").innerHTML = "";
+}
+
+//Check active session
+        document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+	
+</script>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</div>
+<footer id="footer"></footer>
+
+ 
+<script>
+	document.getElementById("footer").innerHTML=new Date();
+	let courseID = document.getElementById("courseID").value;
+</script> 
+
+
+
+
+
+</body>
+
+
+<style>
+    .searchDiag {
+        margin: auto;
+        margin-top: 3%;
+        width: 55%;
+        margin-bottom:4%;
+    }
+    
+    .labels {
+        display: block;
+        padding: 5px;
+        font-weight: 900;
+        font-size: large;
+    }
+    .fields {
+            display: block;
+            width:28%;
+            border: #333333;;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+            height: 30px;
+            margin-bottom: 1%;
+    }
+	.linkBtn {
+    opacity: 80%;
+    background-color: grey;
+        height: 40%;
+        width: 20%;
+        border: none;
+        color:black;
+        font-weight: 800;
+        font-size: large;
+        margin-top: 1%;
+        margin-left: 74%;
+        border-style: solid;
+        border-radius: 6px;
+        border-width: 2px;
+	}
+	.mainMenu {
+    	border-radius: 10px;
+    	border: grey;
+    	border-style:groove;
+    	width: 90%;
+    	height: 60px;
+    	font-size: 20px;
+    	align-items: center;
+    	margin: auto;
+    	margin-top: 50px;
+    	table-layout: fixed;
+	}    
+	.menuElement {
+    	color:red;
+    	font-style: normal;
+    	border-style: inset;
+    	border-radius: 10px;
+	}
+	.title {
+  		background-color:black;
+    	width:100%;
+    	color:goldenrod;
+    	font-size: 100px;
+    	height: 150px;
+    	text-indent: 28%;
+    	font-weight: 900;
+    	border: 1px;
+    	border-style: solid;
+    	border-color: goldenrod;
+   	}
+    .logoutBtn {
+    background-color:black;
+    color:goldenrod;
+    font-size: 18px;
+    margin-left: 89%;
+    font-weight: 300;
+    position: absolute;  
+    top: 32px;
+	}
+#msg {
+	width: 100%;
+    font-size: 23px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    margin-left:50px;
+    font-weight: 900;
+}
+#listOfTeachers {
+	font-size: 18px;
+	margin-left: 3%;
+}
+#browsePrev {
+    margin: auto;
+    width: 4%;
+	margin-left: 45%;
+    transform: rotate(180deg);
+}
+#browseNxt {
+	margin: auto;
+    width: 4%;
+    margin-right: 45%;
+}
+
+
+li {
+	margin: 1em 0;
+}
+
+
+
+
+a {
+    color:black;
+    text-decoration: none;
+    font-weight: 300;
+}
+a:hover {
+    color: goldenrod;
+}
+body {
+background-color:gainsboro;
+}
+body footer {
+    vertical-align: bottom;
+    border:none;
+    border-top: black solid 1px;
+    text-indent: 40%;
+    font-size: small;
+    list-style: height 20px;;        
+}
+</style>
+</html>

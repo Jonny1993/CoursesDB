@@ -1,0 +1,337 @@
+<!–– Author: Therese ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Teacher Information - MTHDB</title>
+
+    </head>
+<body>
+<div id="mainDiv">
+    <div class="title">MTHDB View
+    </div>
+    <div><a class="logoutBtn" href="logout.html" >Logout</a>
+    </div>
+        <table class="mainMenu">
+            <tr>
+                <th class="menuElement"><a href="index.html">Home</a></th>
+                <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+                <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+                <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+            </tr>
+        
+        </table>
+ 
+    <form action="AddTeacher.html">
+        <input class="linkBtn" type="submit" value="Add new staff" />
+    </form>
+    <form action="BrowseTeachers.html">
+        <input class="linkBtn" type="submit" value="Browse all teachers" />
+    </form>
+    
+    
+<p id="msg"></p>
+    
+    
+<p id="errorMsg"></p>
+
+
+<div class="resultDiv">
+	<p id="name1" ></p>
+	<p id="sign1" ></p>
+	<p id="email1" > </p>
+	<p id="hist1" ></p>
+	<p id="develp1" ></p>
+	
+	<div class="list">
+		<ul id="courseOff1" style="list-style-type:none;">
+			Teacher of courses
+		</ul>
+	</div>
+</div>
+
+
+
+<div class="editDiv" id="edit">
+</div>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+<footer id="footer"></footer>
+
+ 
+<script>
+//Check active session
+        
+document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();;
+</script> 
+
+
+
+<script>
+
+    function search(){
+        let jsonReq = new XMLHttpRequest();
+        let crs = 0;
+
+    	const urlParams = new URLSearchParams(window.location.search);
+		const srchPh = urlParams.get('phrase');
+
+		
+		
+		var node = document.createElement("a");
+		var textNode = document.createTextNode("Edit");
+		
+		node.setAttribute('href', "UpdateTeacher.html?phrase=" + srchPh);
+		node.appendChild(textNode);
+		
+		document.getElementById("edit").appendChild(node);
+
+		
+		
+    	
+        jsonReq.open('GET', 'GetTeacher?courseID=' + crs + "&" + "phrase" + "=" + srchPh, true);
+        
+        jsonReq.onload = function() {
+            if(jsonReq.status == 200) {
+                populate(jsonReq.responseText);
+	        }else {
+                document.getElementById("errorMsg").value = jsonReq.statusText;
+	        }
+	    }
+        jsonReq.send();
+ 	}
+    
+    
+    
+          
+    function populate(responseText) {
+        let json = JSON.parse(responseText);
+        
+        document.getElementById("name1").innerHTML = json.Name;
+        document.getElementById("sign1").innerHTML = json.Signature;
+        document.getElementById("email1").innerHTML = json.Email;
+        document.getElementById("hist1").innerHTML = json.History;
+        document.getElementById("develp1").innerHTML = json.DevelopmentPlan;
+        
+        
+        
+        let courseOff = json.CourseOfferings;
+
+        var node;
+        var textNode;
+        
+        for(i = 0; i < courseOff.length; i++) {
+        	node = document.createElement("li");
+        	textNode = document.createTextNode(courseOff[i].code + " " + courseOff[i].year);
+
+    		node.appendChild(textNode);
+    		document.getElementById("courseOff1").appendChild(node);
+        }
+    }
+    
+    
+    search();
+    
+</script>
+
+
+</body>
+<style>
+    .searchDiag {
+        margin: auto;
+        margin-top: 3%;
+        width: 55%;
+        margin-bottom:4%;
+    }
+    
+    .labels {
+        display: block;
+        padding: 5px;
+        font-weight: 900;
+        font-size: large;
+    }
+    
+    #subBtn {
+        background-color: #333333;
+        height: 40px;
+        width: 100px;
+        border: none;
+        color:white;
+        font-weight: 500;
+        font-size: large;
+        margin-top: 3%;
+        display: block;
+    }
+    
+    .fields {
+            display: block;
+            width:28%;
+            border: #333333;;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+            height: 30px;
+            margin-bottom: 1%;
+    }
+	.linkBtn {
+    opacity: 80%;
+    background-color: grey;
+        height: 40%;
+        width: 20%;
+        border: none;
+        color:black;
+        font-weight: 800;
+        font-size: large;
+        margin-top: 1%;
+        margin-left: 74%;
+        border-style: solid;
+        border-radius: 6px;
+        border-width: 2px;
+	}
+	.mainMenu {
+    	border-radius: 10px;
+    	border: grey;
+    	border-style:groove;
+    	width: 90%;
+    	height: 60px;
+    	font-size: 20px;
+    	align-items: center;
+    	margin: auto;
+    	margin-top: 50px;
+    	table-layout: fixed;
+	}    
+	.menuElement {
+    	color:red;
+    	font-style: normal;
+    	border-style: inset;
+    	border-radius: 10px;
+	}
+	.title {
+  		background-color:black;
+    	width:100%;
+    	color:goldenrod;
+    	font-size: 100px;
+    	height: 150px;
+    	text-indent: 28%;
+    	font-weight: 900;
+    	border: 1px;
+    	border-style: solid;
+    	border-color: goldenrod;
+   	}
+    .logoutBtn {
+    background-color:black;
+    color:goldenrod;
+    font-size: 18px;
+    margin-left: 89%;
+    font-weight: 300;
+    position: absolute;  
+    top: 32px;
+	}
+.resultDiv {
+	display: block;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 2%;
+    width:55%;
+}
+#name1 {
+	font-size: 20px;
+}
+#sign1 {
+	font-size: 14px;
+}
+#email1 {
+	margin-bottom: 35px;
+	font-size: 16px;
+}
+#develp1 {
+	margin-bottom: 35px;
+}
+#courseOff1 {
+	font-size: 16px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+ul li {
+	margin: 10px;
+}
+
+#prevBtn {
+    margin: auto;
+    width: 4%;
+	margin-left: 45%;
+    transform: rotate(180deg);
+}
+#nxtBtn {
+	margin: auto;
+    width: 4%;
+    margin-right: 45%;
+}
+#msg {
+	width: 100%;
+    font-size: 21px;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    font-weight: 900;
+}
+.editDiv {
+	background-color: grey;
+ 	border: none;
+  	color: white;
+  	padding: 8px 18px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 20px;
+  	margin-left: 200px;
+    margin-top: 50px;
+}
+a {
+    color:black;
+    text-decoration: none;
+    font-weight: 300;
+}
+a:hover {
+    color: goldenrod;
+}
+body {
+background-color:gainsboro;
+}
+body footer {
+    vertical-align: bottom;
+    border:none;
+    border-top: black solid 1px;
+    text-indent: 40%;
+    font-size: small;
+    list-style: height 20px;;        
+}
+</style>
+</html>

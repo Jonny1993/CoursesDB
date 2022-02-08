@@ -1,0 +1,245 @@
+<!–– Author: Ramy ––>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Login - MTHDB</title>
+
+</head>
+<body>
+	<div class="title">MTHDB View</div>
+
+	<table class="mainMenu">
+		<tr>
+			<th class="menuElement"><a href="index.html">Home</a></th>
+			<th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+			<th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+			<th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+		</tr>
+
+	</table>
+	<div id=infoMsg>
+		<p id="notLogged">You are either not logged in or your session has
+			expired</p>
+		Please type in your username and password and click log in:
+	</div>
+	<div id="logDiv">
+		<form id="inputs" method='get'>
+			<div class="lab-in">
+				<label class="labels">Username:</label> <input class="fields"
+					id="username" type="text" value="">
+			</div>
+			<div class="lab-in">
+				<label class="labels">Password:</label> <input class="fields"
+					id="password" type="password" value="">
+			</div>
+			<div class="lab-in">
+				<button type="submit" class="fields" id="subBtn">Log in</button>
+			</div>
+		</form>
+	</div>
+	<footer id="footer">12-12-2013</footer>
+
+
+
+</body>
+
+<style type="text/css">
+#subBtn {
+	background-color: #333333;
+	height: 40px;
+	width: 100%;
+	border: none;
+	color: white;
+	font-weight: 500;
+	font-size: large;
+	margin-top: 5%;
+}
+
+#infoMsg {
+	margin: auto;
+	text-align: center;
+	width: 70%;
+	font-weight: 999;
+	margin-top: 3%;
+	font-size: x-large;
+}
+
+.fields {
+	display: block;
+	width: 100%;
+	border: #333333;;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 5px;
+}
+
+.labels {
+	display: block;
+	padding: 5px;
+	font-weight: 900;
+}
+
+.lab-in {
+	padding-bottom: 15px;
+}
+
+#logDiv {
+	width: 40%;
+	margin: auto;
+}
+
+#inputs {
+	width: 55%;
+	margin: auto;
+	margin-bottom: 10%;
+	margin-top: 1.5%;
+}
+
+#inputs input[type="text"], #inputs textarea, #inputs input[type="password"]
+	{
+	padding: 8px;
+	width: 100%;
+}
+
+#inputs textarea {
+	height: 80px;
+}
+
+#notLogged {
+	color: red;
+	font-size: medium;
+}
+
+#wlcomMsg {
+	width: 55%;
+	font-size: 21px;
+	margin: auto;
+	margin-top: 5%;
+	margin-bottom: 18%;
+}
+
+.mainMenu {
+	border-radius: 10px;
+	border: grey;
+	border-style: groove;
+	width: 90%;
+	height: 60px;
+	font-size: 20px;
+	align-items: center;
+	margin: auto;
+	margin-top: 50px;
+}
+
+.menuElement {
+	color: red;
+	font-style: normal;
+	border-style: inset;
+	border-radius: 10px;
+}
+
+.title {
+	background-color: black;
+	width: 100%;
+	color: goldenrod;
+	font-size: 100px;
+	height: 150px;
+	text-indent: 28%;
+	font-weight: 900;
+	border: 1px;
+	border-style: solid;
+	border-color: goldenrod;
+}
+
+.logoutBtn {
+	background-color: black;
+	color: goldenrod;
+	font-size: 18px;
+	margin-left: 89%;
+	font-weight: 300;
+	position: absolute;
+	top: 32px;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+	font-weight: 300;
+}
+
+a:hover {
+	color: goldenrod;
+}
+
+body {
+	background-color: gainsboro;
+}
+
+body footer {
+	vertical-align: bottom;
+	border: none;
+	border-top: black solid 1px;
+	text-indent: 40%;
+	font-size: small;
+	list-style: height 20px;;
+}
+</style>
+
+<script>
+	document.getElementById("footer").innerHTML = new Date(); //Current date to be displayed at the buttom of the page
+
+	function capitalize() { //switch letters to upper case when called (which is in "setonblur" up in html code). Setonblurs is triggered when the user clicks away
+		document.getElementById("cCode").value = document
+				.getElementById("cCode").value.toUpperCase();
+	}
+	
+	function donothing(){}
+
+	document.getElementById('subBtn').addEventListener('click', submitCourse);
+	function submitCourse(e) {
+		e.preventDefault();
+
+		let usr = document.getElementById('username');
+		let usrStr = usr.value.toString();
+		if (usrStr.length == 0) {
+			window.alert("Username cannot be empty");
+			return;
+		}
+
+		let pass = document.getElementById('password');
+		let passStr = pass.value.toString();
+		if (passStr.length == 0) {
+			window.alert("Password cannot be empty");
+			return;
+		}
+
+		else {
+			// window.alert("Adding..");
+
+		}
+
+		let jsonReq = new XMLHttpRequest();
+		let loginData = "username=" + usrStr + "&password=" + passStr;
+		jsonReq.open('POST', '/MTHDB/StartSession', true);
+		jsonReq.setRequestHeader("Content-Type",
+				"application/x-www-form-urlencoded"); //This is neccessary when using post with XMLHttpRequest 
+
+		jsonReq.onload = function() {
+			if (jsonReq.status == 200) {
+				console.log(jsonReq.responseText);
+
+				if (jsonReq.responseText == 1) {
+					setTimeout(donothing, 4000);
+					//jsonReq.setRequestHeader("sessionID","sessionID="+jsonReq.responseText+";max-age=900");   //No need
+					location.replace("index.html");
+				} else {
+					window.alert("Wrong log in info!");
+				}
+			} else {
+				document.getElementById("errorMsg").value = jsonReq.statusText;
+			}
+		}
+		jsonReq.send(loginData);
+	}
+</script>
+</html>

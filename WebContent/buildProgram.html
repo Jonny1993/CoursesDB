@@ -1,0 +1,530 @@
+<!–– Author: Vagif ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Build Program - MTHDB</title>
+
+    </head>
+    <body>
+    <div id="mainDiv">
+        <div class="title">MTHDB View</div>
+        <div><a class="logoutBtn" href="logout.html" >Logout</a>
+        </div>
+        
+            <table class="mainMenu">
+                <tr>
+                    <th class="menuElement"><a href="index.html">Home</a></th>
+                    <th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+                    <th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+                    <th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+                </tr>
+            </table>
+        <br>
+        
+        <div id="buildDialog">
+                <label class="label" for="choices">Pick year amount:</label> 
+                <select id="choices" class="dropMenu">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+						<option value="3">3</option>
+                        <option value="4">4</option>
+						<option value="5">5</option>
+				</select> 
+                <input id="buildBtn" type="submit" value="Build" />
+	</div>
+        
+        <div id="addProgram">
+            <label class="label"> Program Name</label>
+                <input id="Name" type="text"/><br>
+                <label class="label"> Code</label>
+                <input id="Code" type="text"/><br>
+                <label class="label"> Branch</label>
+                <input id="Branch" type="text"/><br>
+                <label class="label"> Points</label>
+                <input id="Points" type="text"/><br>
+                <label class="label"> Co-ordinator</label>
+                <input id="Coordinator" type="text"/>
+                <input id="addProgramBtn" type="submit" value="Add" />
+	</div>
+        
+        <div id="coursesBox" class="coursesBox">
+            
+        </div>
+        
+        <div id="program" class="programBox">
+            <b class='perioder'> P0 P1 P2 P3 P4 </b>
+        </div>
+        <script>
+            document.getElementById("addProgramBtn").addEventListener('click', addProgram);  
+            document.getElementById('buildBtn').addEventListener('click', build);
+       
+            const courses = [{'name': 'HI1030', 'CourseCode': 'HI1030', 'Points': '6'}, {'name': 'Kurs2', 'CourseCode': 'HI1029', 'Points': '8'}
+            ,{'name': 'Kurs3', 'CourseCode': 'HI1025', 'Points': '10'}, {'name': 'Kurs4', 'CourseCode': 'HI1030', 'Points': '7'},
+        {'name': 'Kurs4', 'CourseCode': 'HI1030', 'Points': '6'}, {'name': 'Kurs5', 'CourseCode': 'HI1030', 'Points': '8'}
+            ,{'name': 'Kurs6', 'CourseCode': 'HI1030', 'Points': '10'}, {'name': 'Kurs7', 'CourseCode': 'HI1030', 'Points': '7'}];
+            let courseArrAsJSObject=JSON.parse(getCookie("coursesToAdd"));
+            let courseArr= courseArrAsJSObject.courses;
+            buildPickedCourses(courseArr);
+            console.log(courseArr);
+                       
+            function getCookie(cName)
+            {
+                var name = cName + "=";
+                var cookies = document.cookie;
+                var coockiesArr = cookies.split(';');    //Splits string into array of string using ; as delimiter
+                for(var i = 0; i <coockiesArr.length; i++) {
+                    var singleCookie= coockiesArr[i];
+                    while (singleCookie.charAt(0) == ' ') {    //To remove spaces
+                    singleCookie= singleCookie.substring(1);
+                    }
+                    if (singleCookie.indexOf(name) == 0) {
+                        return singleCookie.substring(name.length, singleCookie.length);
+                    }
+                }
+                return "";
+            }
+            
+            function addEvents()
+            {
+                
+                const filled = document.querySelectorAll('.fill');
+                const empties = document.querySelectorAll('.empty');
+                 for (const fill of filled) 
+                { 
+                    fill.addEventListener('dragstart', dragStart);
+                    fill.addEventListener('dragend', dragEnd);
+                }
+                    // Loop through empty boxes and add listeners
+                for (const empty of empties) {
+                empty.addEventListener('dragover', dragOver);
+                empty.addEventListener('dragenter', dragEnter);
+                empty.addEventListener('dragleave', dragLeave);
+                empty.addEventListener('drop', dragDrop);
+                }
+            }
+           
+            function dragStart() {
+              this.className += ' hold';
+              setTimeout(() => (this.className = 'invisible'), 0);
+              event.dataTransfer.setData("Text", event.target.id);
+            }
+            function dragEnd() 
+            {
+              this.className = 'fill';
+            }
+            function dragOver(e) {
+              e.preventDefault();
+            }
+            function dragEnter(e) {
+              e.preventDefault();
+              this.className += ' hover';
+            }
+            function dragLeave() {
+              this.className = 'empty';
+            }
+            function dragDrop(ev) 
+            {
+                this.className = 'empty';
+                 var data = event.dataTransfer.getData("Text");
+                event.target.appendChild(document.getElementById(data));   
+            }
+            
+            function addProgram()
+            {
+                const empty = document.querySelectorAll('.empty');
+                for (var i = 0; i < empty.length; i++)
+                {
+                   if(empty[i].innerHTML == "")
+                   {
+                       empty[i].innerHTML =  '<div class="fill" id="empty"></div>';
+                   }
+                }
+     
+                const filled = document.querySelectorAll('.fill');
+                var courses = [];
+                var text2 = document.getElementById('Code').value + " " + document.getElementById('Name').value
+                    + " " + document.getElementById('Branch').value + " " + document.getElementById('Points').value
+                    + " " + document.getElementById('Coordinator').value;
+                
+                for (var i = 0; i < filled.length; i++)
+                {
+                    courses.push(filled[i].id);
+                }
+                
+                
+                document.getElementById('coursesBox').innerHTML = "";
+                document.getElementById('addProgram').innerHTML = "";
+                
+                var text = "";
+                
+                for (var i = 0; i < courses.length; i++) 
+                {
+                    text += courses[i] + " ";
+                }
+                
+                let jsonReq = new XMLHttpRequest();
+                console.log(text);
+                jsonReq.open('GET', 'buildProgram?courses='+text+"&program="+text2, true);
+                jsonReq.onload = function()
+                        {
+                            if (jsonReq.status == 200)
+                            {
+				if(jsonReq.responseText.localeCompare("true"))
+                                {
+                                   document.getElementById('program').innerHTML = "<p2 class = 'addedProgram'> Program added succesfully! </p2>"; 
+                                }
+                                else
+                                {
+                                    document.getElementById('program').innerHTML = "<p2 class = 'addedProgram'> Error! </p2>"; 
+                                }
+                            }
+                            else
+                            {
+	              		document.getElementById("errorMsg").value = jsonReq.statusText;
+			    }
+                        }
+                jsonReq.send();
+            }
+            
+            function buildPickedCourses(courses)
+            {
+                let html = "";
+                for (var i = 0; i < courses.length; i++) 
+                {
+                    html += '<div class="fill" id="' + courses[i] + '" draggable="true">' + courses[i] + '</div>';
+                    if(i%4 == 3)
+                    {
+                        html+= '<br>';
+                    }
+                }
+                
+                document.getElementById("coursesBox").innerHTML = html;
+            }
+            function build()
+            {
+                let years = document.getElementById("choices").options[choices.selectedIndex].value;
+                
+                document.getElementById("buildDialog").style.display = 'none';
+                buildRows(years);
+            }
+            
+            function buildRows(years)
+            {
+                for (let i = 0; i < years; i++) 
+                {
+                    let html = '<div id = "yearContainer' + i + '"> <div class="yearAddRow">'  + 'Year ' + (i+1) + '<input type="submit" id="addRowToYear' + i +'"\n\
+                        value="Add row"/> </div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<br>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '<div class="empty"></div>';
+                    html += '</div>';
+                    html += '<br>';
+                    html += '<br>';
+                    document.getElementById('program').innerHTML += html;
+                }
+                
+                for (let i = 0; i < years; i++)
+                {
+                    document.getElementById('addRowToYear'+i).addEventListener('click',function ()
+                                                                            {
+                                                                                document.getElementById('yearContainer'+i).innerHTML+='\
+                                                                        <br>\n\
+                                                                        <div class="empty"></div>\n\
+                                                                        <div class="empty"></div>\n\
+                                                                        <div class="empty"></div>\n\
+                                                                        <div class="empty"></div>\n\
+                                                                        <div class="empty"></div>';
+                                                                        addEvents();
+                                                                            });
+                }
+                
+                addEvents();
+            }
+            
+            //Check active session
+        document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+        </script>
+        
+        </div>
+
+
+    </body>
+
+    
+    <style type="text/css">
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 25%;
+    }
+    
+     input[type=text], select 
+    {
+        width: 15%;
+        padding: 6px 10px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+    
+    .label
+    {
+        width: 100px;
+        display: inline-block;
+        
+    }
+
+    input[type=submit] 
+    {
+        width: 10%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 7px 10px;
+        margin: 4px 0;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    input[type=submit]:hover
+    {
+        background-color: #45a049;
+    }
+    
+    .perioder
+    {
+        word-spacing: 120px;
+    }
+    
+    .coursesBox
+    {
+        position: fixed;
+        display: inline-block;
+    }
+    
+    .programBox
+    {
+        display: inline-block;
+        left: 700px;
+        position: relative;
+    }
+    
+    .fill 
+    {
+      background-color: #9eadad;
+      position: relative;
+      display: inline-block;
+      height: 70px;
+      width: 110px;
+      margin: 3px;
+      top: 3px;
+      left: 3px;
+      cursor: pointer;
+    }
+    .addedProgram
+    {
+        color: green;
+        font-size: 40px;
+    }
+    
+    .hold 
+    {
+      border: solid 5px #ccc;
+    }
+    .empty 
+    {
+      
+      
+      display: inline-block;
+      height: 80px;
+      width: 120px;
+      margin: 2px;
+      border: solid 2px #565e5e;
+      background: #9eadad;
+    }
+    .hover
+    {
+      background: #f4f4f4;
+      border-style: dashed;
+    }
+    
+    .invisible
+    {
+        display: none;
+    }
+    
+    .table, th, td
+    {
+        table-layout: auto;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid black;
+        text-align: left;
+    }
+    .yearAddRow
+    {
+        color: #575c58;
+        font-size: 20px;
+    }
+    
+    .searchDiag 
+    {
+	margin: auto;
+	margin-top: 3%;
+	width: 55%;
+	margin-bottom: 4%;
+    }
+    
+    .programNamn
+    {
+        text-align: 30%;
+    }
+    
+    .perioder 
+    {
+    display: inline-block; 
+    padding-right: 190  px; 
+    }
+    
+    .some-page-wrapper
+    {
+        display: flex;
+        margin: 10px;
+        background-color: grey;
+        flex-wrap: wrap;
+        width: 70%;
+        align-content: center;
+    }
+    
+    .row 
+    {
+       display: flex;
+       flex-direction: row;
+       flex-wrap: wrap;
+       width: 100%;
+    }
+    .columnPeriod
+    {
+       display: flex;
+       flex-direction: column;
+       flex-basis: 100%;
+       flex: 1;
+    }
+    
+    .column
+    {
+       display: flex;
+       flex-direction: column;
+       flex-basis: 100%;
+       flex: 1;
+       text-align: center;
+       font-size: 22px;
+    }
+    
+    .blue-column 
+    {
+        background-color: #c0c2c2;
+        height: 80px;
+        border-style: solid;
+    }
+    
+    .blue-column-pr 
+    {
+        background-color: #89ccf5;
+        height: 80px;
+        border-style: solid;
+    }
+    .gray-column 
+    {
+        height: 80px;
+        background-color: #a7a8a8;
+        border-style: solid;
+    }
+    
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    }    
+     .menuElement {
+    color: red;
+    font-style: normal;
+    border-style: inset;
+    border-radius: 10px;
+    text-align: center;
+    width: 20%;
+	}
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+        .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+    }
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+    }
+    </style>
+</html>

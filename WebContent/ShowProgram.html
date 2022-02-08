@@ -1,0 +1,367 @@
+<!–– Author: Vagif ––>
+<!DOCTYPE html>
+<html>
+    <head>
+
+<title>Programs - MTHDB</title>
+    </head>
+    <body>
+	<div id="mainDiv">
+		<div class="title">MTHDB View</div>
+		<div>
+			<a class="logoutBtn" href="logout.html">Logout</a>
+		</div>
+		<table class="mainMenu">
+			<tr>
+				<th class="menuElement"><a href="index.html">Home</a></th>
+				<th class="menuElement"><a href="ShowTeacher.html">Staff</a></th>
+				<th class="menuElement"><a href="ShowCourse.html">Courses</a></th>
+				<th class="menuElement"><a href="ShowProgram.html">Program</a></th>
+			</tr>
+
+		</table>
+    		<form action="buildProgram.html">
+                    <input class="linkBtn" type="submit" value="Build new program"/></form>
+        <div class="searchDiag">
+		<label class="labels">Phrase:</label> <input class="fields"
+			id="phrase" /> <label class="dropMnuMsg" for="choices">Choose
+			search type:</label> <select id="choices" class="dropMenu">
+			<option value="name">Name</option>
+			<option value="code">Program Code</option>
+		</select> <input id="subBtn" type="submit" value="Search" />
+	</div>
+        
+        <table id="table">
+            <th> Result </th>
+        </table>
+        
+        <h2 id="programNamn" class="programNamn"> </h2> 
+        <h3 class="perioder">  </h3>
+        <h3 class="perioder"> P0 </h3>
+        <h3 class="perioder"> P1 </h3>
+        <h3 class="perioder"> P2 </h3>
+        <h3 class="perioder"> P3 </h3>
+        <h3 class="perioder"> P4 </h3>
+        
+        <div id="tabell">
+        </div>
+        <script>
+            document.getElementById('subBtn').addEventListener('click', search);
+            
+            function search(e)
+            {               
+                        e.preventDefault();
+			let jsonReq = new XMLHttpRequest();
+			let crs = 0;
+			let srchTyp = document.getElementById("choices").options[choices.selectedIndex].value;
+			let srchPh = document.getElementById("phrase").value;
+			if (srchPh == "") {
+				window.alert("Search phrase can not be empty");
+				return;
+			}
+			jsonReq.open('GET', 'GetProgram?courseID='+crs+"&"+srchTyp+"="+srchPh,true);
+                        
+			jsonReq.onload = function()
+                        {
+                            if (jsonReq.status == 200)
+                            {
+				visaSokResultat(jsonReq.responseText);
+                            }
+                            else
+                            {
+	              		document.getElementById("errorMsg").value = jsonReq.statusText;
+			    }
+                        }
+
+                        jsonReq.send();
+            }
+            
+            function populate(json)
+            {
+                document.getElementById("programNamn").innerHTML = "Programnamn: " + json.programNamn + " " + json.ProgramCode;
+                document.getElementById("tabell").innerHTML ="";
+                for (var i = 0; i < json.Grade.length; i++) 
+                {
+                    var html = "";
+                    html = html.concat(" ", "<div class='some-page-wrapper'>");
+                    html = buildPeriodRow(json.Grade[i], html);
+                    html =  html.concat("</div>");
+                    document.getElementById("tabell").innerHTML += html;
+                }
+                
+            }
+
+            function buildPeriodRow(row, html)
+            {               
+                for (var i = 0; i < row.length; i++) 
+                {
+                    
+                    if(i==0)
+                    {
+                        html =  html.concat("<div class='row'>");
+                        html =  html.concat("<div class='column'> <div class='blue-column'>");
+                        html =  html.concat(row[i][0].programKod + "<br/>" + "Årskurs " + row[i][0].year + "<br/>" + "Antal Stud. " + row[i][0].antalStud);
+                        html =  html.concat("</div></div>");
+                    }
+                    else
+                    {
+                        html =  html.concat("<div class='row'>");
+                        html =  html.concat("<div class='column'> <div class='blue-column'>");
+                        html =  html.concat("</div></div>");
+                    }
+                
+                    for (var j = 1; j < row[i].length; j++)
+                    {    
+                        if(j%2==0)
+                        {
+                            html =  html.concat("<div class='columnPeriod'> <div class='blue-column'>");
+                        }
+                        else
+                        {
+                        html =  html.concat("<div class='columnPeriod'> <div class='gray-column'>");
+                        }   
+
+                        html =  html.concat(row[i][j].kursNamn + " " + row[i][j].hogskolePoangTotalt + "hp"
+                                + "<br/>" + row[i][j].kurskod + ", " + row[i][j].kursansvarig
+                                + "<br/>" + "Samläs:" + row[i][j].samlas);
+                        html =  html.concat("</div></div>");
+                    } 
+                    html =  html.concat("</div>");  
+                }
+                return html;
+            }
+            
+            
+            function visaSokResultat(json) 
+            {         
+                json = JSON.parse(json);
+                console.log(json);
+                for (let i = 0; i < json.Program.length; i++)
+                {
+                    var html = " ";
+                    html += "<tr> <td>";
+                    html += json.Program[i].programNamn;
+                    html += "<button type='button' id='";
+                    html += "button" + i;
+                    html += "'>Visa</button>";
+                    html += "</td></tr>";
+                    document.getElementById("table").innerHTML += html;
+                }
+                
+                for (let i = 0; i < json.Program.length; i++)
+                {
+
+                    document.getElementById("button"+i).addEventListener('click',function ()
+                                                                            {
+                                                                                console.log(json.Program[i]);
+                                                                                populate(json.Program[i]);
+                                                                            });
+                }
+            }
+            
+			//Check active session
+			
+			document.getElementById("mainDiv").style.visibility="hidden";
+        let sessionReq = new XMLHttpRequest();
+        sessionReq .open('GET', 'CheckActiveSession', true);
+        sessionReq .onload = function() {
+            if (sessionReq .status == 200) {
+                if (sessionReq .responseText==1) {
+                    document.getElementById("mainDiv").style.visibility="visible";
+                }
+                if (sessionReq .responseText!=1) {
+                    window.location.assign("Login.html");
+                }
+            }
+        }
+        sessionReq .send();
+        </script>
+        </div>
+
+		<footer id="footer">12-12-2013</footer>
+		
+		<script>
+		document.getElementById("footer").innerHTML=new Date();
+		</script>
+
+    </body>
+
+    
+    <style type="text/css">
+    #wlcomMsg{
+        width: 55%;
+        font-size: 21px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 25%;
+    }
+    
+
+    .table, th, td
+    {
+        table-layout: auto;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid black;
+        text-align: left;
+    }
+
+    
+    .searchDiag 
+    {
+	margin: auto;
+	margin-top: 3%;
+	width: 55%;
+	margin-bottom: 4%;
+    }
+    
+    .programNamn
+    {
+        text-align: 30%;
+    }
+    
+    .perioder 
+    {
+    display: inline-block; 
+    padding-right: 190  px; 
+    }
+    
+    .some-page-wrapper
+    {
+        display: flex;
+        margin: 10px;
+        background-color: grey;
+        flex-wrap: wrap;
+        width: 70%;
+        align-content: center;
+    }
+    
+    .row 
+    {
+       display: flex;
+       flex-direction: row;
+       flex-wrap: wrap;
+       width: 100%;
+    }
+
+    .columnPeriod
+    {
+       display: flex;
+       flex-direction: column;
+       flex-basis: 100%;
+       flex: 1;
+    }
+    
+    .column
+    {
+       display: flex;
+       flex-direction: column;
+       flex-basis: 100%;
+       flex: 1;
+       text-align: center;
+       font-size: 22px;
+    }
+    
+    .blue-column 
+    {
+        background-color: #c0c2c2;
+        height: 80px;
+        border-style: solid;
+        font-size: 15px;
+    }
+    
+    .blue-column-pr 
+    {
+        background-color: #89ccf5;
+        height: 80px;
+        border-style: solid;
+    }
+
+    .gray-column 
+    {
+        height: 80px;
+        background-color: #a7a8a8;
+        border-style: solid;
+        font-size: 15px;
+    }
+    
+    .mainMenu{
+        border-radius: 10px;
+        border: grey;
+        border-style:groove;
+        width: 90%;
+        height: 60px;
+        font-size: 20px;
+        align-items: center;
+        margin: auto;
+        margin-top: 50px;
+    } .menuElement {
+    color: red;
+    font-style: normal;
+    border-style: inset;
+    border-radius: 10px;
+    text-align: center;
+    width: 20%;
+}
+    .title{
+        background-color:black;
+        width:100%;
+        color:goldenrod;
+        font-size: 100px;
+        height: 150px;
+        text-indent: 28%;
+        font-weight: 900;
+        border: 1px;
+        border-style: solid;
+        border-color: goldenrod;
+        }
+        .logoutBtn{
+        background-color:black;
+        color:goldenrod;
+        font-size: 18px;
+        margin-left: 89%;
+        font-weight: 300;
+        position: absolute;  
+        top: 32px;
+    }
+    
+    	.linkBtn {
+		opacity: 80%;
+		background-color: grey;
+		height: 40%;
+		width: 16%;
+		border: none;
+		color: black;
+		font-weight: 800;
+		font-size: large;
+		margin-top: 1%;
+		margin-left: 74%;
+		border-style: solid;
+		border-radius: 6px;
+		border-width: 2px;
+		}
+
+    a{
+        color:black;
+        text-decoration: none;
+        font-weight: 300;
+    }
+    a:hover{
+        color: goldenrod;
+    }
+
+    body{
+    background-color:gainsboro;
+    }
+    body footer{
+        vertical-align: bottom;
+        border:none;
+        border-top: black solid 1px;
+        text-indent: 40%;
+        font-size: small;
+        list-style: height 20px;;        
+
+
+    }
+    </style>
+</html>
